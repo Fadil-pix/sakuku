@@ -1,0 +1,2750 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#191A23" />
+    <title>Sakuku</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <link rel="icon" type="image/png" href="icon-192.png" />
+    <script src="config.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #191a23;
+        --lime: #b9ff66;
+        --g: #f3f3f3;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      body {
+        font:
+          500 15px "Space Grotesk",
+          system-ui,
+          sans-serif;
+        color: var(--ink);
+        background: #fff;
+      }
+      #app {
+        max-width: 480px;
+        margin: auto;
+        padding: 16px 16px 120px;
+      }
+      .pg {
+        animation: fd 0.15s;
+      }
+      @keyframes fd {
+        from {
+          opacity: 0;
+        }
+      }
+      .card {
+        border: 2px solid var(--ink);
+        border-radius: 22px;
+        box-shadow: 0 5px 0 var(--ink);
+        padding: 16px;
+        margin: 16px 0;
+        background: #fff;
+      }
+      .card.k {
+        background: var(--ink);
+        color: #fff;
+      }
+      .card.g {
+        background: var(--g);
+      }
+      .card p {
+        margin-top: 10px;
+      }
+      .hl {
+        background: var(--lime);
+        color: var(--ink);
+        border-radius: 6px;
+        padding: 2px 8px;
+        font-weight: 700;
+        font-size: 19px;
+        display: inline-block;
+      }
+      .btn {
+        border: 2px solid var(--ink);
+        border-radius: 999px;
+        background: var(--lime);
+        color: var(--ink);
+        padding: 12px 18px;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 700;
+        box-shadow: 0 4px 0 var(--ink);
+        cursor: pointer;
+      }
+      .btn:active {
+        transform: translateY(4px);
+        box-shadow: 0 0 0 var(--ink);
+      }
+      .btn.k {
+        background: var(--ink);
+        color: var(--lime);
+      }
+      .btn:disabled {
+        opacity: 0.6;
+      }
+      .big {
+        display: block;
+        width: 100%;
+        margin: 12px 0;
+        text-align: center;
+      }
+      .chip {
+        border: 2px solid var(--ink);
+        border-radius: 999px;
+        padding: 6px 12px;
+        background: #fff;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        white-space: nowrap;
+        color: var(--ink);
+      }
+      .chip.on {
+        background: var(--lime);
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 6px 2px 8px;
+        margin: 6px 0;
+      }
+      .row::-webkit-scrollbar {
+        display: none;
+      }
+      .wrap {
+        flex-wrap: wrap;
+      }
+      .row2 {
+        display: flex;
+        gap: 8px;
+        margin: 8px 0;
+      }
+      input,
+      select {
+        border: 2px solid var(--ink);
+        border-radius: 14px;
+        padding: 11px 12px;
+        font-family: inherit;
+        font-size: 15px;
+        width: 100%;
+        background: #fff;
+        color: var(--ink);
+        margin-top: 8px;
+      }
+      .hd {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .x {
+        border: 2px solid var(--ink);
+        background: #fff;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background: #fff;
+        border-top: 2px solid var(--ink);
+        padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+        z-index: 5;
+      }
+      nav button {
+        background: none;
+        border: 0;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 700;
+        color: #888;
+        display: grid;
+        gap: 2px;
+        justify-items: center;
+        width: 20%;
+      }
+      nav button.on {
+        color: var(--ink);
+      }
+      nav b {
+        font-size: 20px;
+        font-weight: 400;
+      }
+      nav .plus {
+        width: 62px;
+        height: 62px;
+        border-radius: 50%;
+        background: var(--lime);
+        border: 2px solid var(--ink);
+        box-shadow: 0 4px 0 var(--ink);
+        font-size: 32px;
+        color: var(--ink);
+        margin-top: -30px;
+        display: block;
+      }
+      nav .plus:active {
+        transform: translateY(4px);
+        box-shadow: none;
+      }
+      #sheet {
+        position: fixed;
+        inset: 0;
+        background: #191a23b3;
+        display: none;
+        z-index: 10;
+        align-items: flex-end;
+      }
+      #sheet.open {
+        display: flex;
+        animation: fd 0.2s;
+      }
+      .pn {
+        background: #fff;
+        width: 100%;
+        max-width: 480px;
+        margin: auto auto 0;
+        border: 2px solid var(--ink);
+        border-radius: 24px 24px 0 0;
+        padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+        max-height: 92vh;
+        overflow: auto;
+      }
+      .amt {
+        font-size: 34px;
+        font-weight: 700;
+        text-align: center;
+        margin: 10px 0;
+      }
+      .pad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin: 8px 0;
+      }
+      .pad button {
+        border: 2px solid var(--ink);
+        border-radius: 14px;
+        background: var(--g);
+        padding: 12px;
+        font-family: inherit;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .pad button:active {
+        background: var(--lime);
+      }
+      .tx {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 2px dashed #ccc;
+      }
+      .tx:last-child {
+        border: 0;
+      }
+      .pill {
+        background: var(--lime);
+        border: 2px solid var(--ink);
+        border-radius: 8px;
+        padding: 0 6px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .in {
+        color: #0a7a2f;
+      }
+      .pv {
+        min-height: 20px;
+        font-size: 13px;
+        margin: 8px 2px 0;
+        color: #555;
+      }
+      #toast {
+        position: fixed;
+        top: 14px;
+        left: 50%;
+        transform: translate(-50%, -90px);
+        background: var(--ink);
+        color: var(--lime);
+        border: 2px solid var(--lime);
+        border-radius: 999px;
+        padding: 10px 18px;
+        z-index: 20;
+        transition: 0.25s;
+        max-width: 92vw;
+        font-weight: 700;
+        text-align: center;
+      }
+      #toast.show {
+        transform: translate(-50%, 0);
+      }
+      #toast.bad {
+        background: #ff4d4d;
+        color: #fff;
+        border-color: var(--ink);
+      }
+      .sk {
+        height: 90px;
+        border-radius: 22px;
+        border: 2px solid var(--ink);
+        background: linear-gradient(90deg, #eee, #fafafa, #eee);
+        background-size: 200%;
+        animation: sh 1.2s infinite;
+        margin: 16px 0;
+      }
+      @keyframes sh {
+        to {
+          background-position: -200%;
+        }
+      }
+      .donut {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin: 10px auto;
+        border: 2px solid var(--ink);
+        position: relative;
+      }
+      .donut:after {
+        content: "";
+        position: absolute;
+        inset: 34px;
+        background: #fff;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+      }
+      .bars {
+        display: flex;
+        gap: 6px;
+        height: 140px;
+        overflow-x: auto;
+        margin-top: 10px;
+      }
+      .bc {
+        flex: none;
+        width: 26px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        font-size: 10px;
+      }
+      .bb {
+        display: flex;
+        align-items: flex-end;
+        gap: 2px;
+        flex: 1;
+        width: 100%;
+      }
+      .bb i {
+        flex: 1;
+        border: 1.5px solid var(--ink);
+        border-radius: 4px 4px 0 0;
+        display: block;
+        min-height: 2px;
+      }
+      .cmp {
+        height: 22px;
+        border: 2px solid var(--ink);
+        border-radius: 8px;
+        margin: 4px 0 10px;
+      }
+      .empty {
+        text-align: center;
+        padding: 20px 8px;
+      }
+      .back {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+      .menu {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        text-align: left;
+        font-family: inherit;
+        font-size: 15px;
+        color: var(--ink);
+        cursor: pointer;
+      }
+      .menu:active {
+        transform: translateY(4px);
+        box-shadow: 0 1px 0 var(--ink);
+      }
+      .menu .ic {
+        width: 54px;
+        height: 54px;
+        flex: none;
+        border: 2px solid var(--ink);
+        border-radius: 16px;
+        background: var(--lime);
+        display: grid;
+        place-items: center;
+        font-size: 28px;
+      }
+      .menu small {
+        display: block;
+        color: #555;
+        font-weight: 500;
+      }
+      .gh {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .gi {
+        width: 50px;
+        height: 50px;
+        flex: none;
+        border: 2px solid var(--ink);
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        font-size: 26px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .gi.sel {
+        outline: 3px solid var(--ink);
+        outline-offset: 2px;
+      }
+      .bar {
+        height: 30px;
+        border: 3px solid var(--ink);
+        border-radius: 999px;
+        background: #fff;
+        overflow: hidden;
+        position: relative;
+        margin: 12px 0 8px;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        border-right: 3px solid var(--ink);
+        transition: width 0.5s;
+      }
+      .bar i.z {
+        border-right: 0;
+      }
+      .bar span {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .st {
+        display: inline-block;
+        border: 2px solid var(--ink);
+        border-radius: 8px;
+        padding: 0 6px;
+        font-size: 12px;
+        font-weight: 700;
+        background: var(--lime);
+      }
+      .st.w {
+        background: #ffcf56;
+      }
+      .st.gr {
+        background: #eee;
+      }
+      .warn {
+        background: #fff6d6;
+        border: 2px dashed var(--ink);
+        border-radius: 12px;
+        padding: 6px 10px;
+        font-size: 13px;
+        margin-top: 10px;
+        font-weight: 700;
+      }
+      .sm {
+        padding: 8px 12px;
+        font-size: 13px;
+        box-shadow: 0 3px 0 var(--ink);
+      }
+      .chip {
+        touch-action: manipulation;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+      }
+      .steps {
+        display: flex;
+        gap: 6px;
+        margin: 10px 0;
+      }
+      .steps i {
+        flex: 1;
+        height: 10px;
+        border: 2px solid var(--ink);
+        border-radius: 6px;
+        background: #fff;
+      }
+      .steps i.on {
+        background: var(--lime);
+      }
+      .steps i.cur {
+        background: var(--ink);
+      }
+      .lab {
+        font-size: 13px;
+        font-weight: 700;
+        margin-top: 10px;
+        display: block;
+      }
+      .chk {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 12px;
+        font-weight: 700;
+      }
+      .chk input {
+        width: 22px;
+        height: 22px;
+        margin: 0;
+        accent-color: #191a23;
+        flex: none;
+      }
+      .conf {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 30;
+      }
+      .conf i {
+        position: absolute;
+        top: 45%;
+        width: 12px;
+        height: 12px;
+        border: 2px solid var(--ink);
+        animation: cf 1.4s ease-out forwards;
+      }
+      @keyframes cf {
+        to {
+          transform: translate(var(--dx), var(--dy)) rotate(var(--r));
+          opacity: 0;
+        }
+      }
+      .pop {
+        animation: pp 0.6s;
+      }
+      @keyframes pp {
+        40% {
+          transform: scale(1.04);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="sheet"></div>
+    <div id="toast"></div>
+    <script>
+      const CATS = {
+        out: [
+          "Makanan",
+          "Minuman",
+          "Transport",
+          "Belanja",
+          "Tagihan",
+          "Hiburan",
+          "Kesehatan",
+          "Tabungan",
+          "Lainnya",
+        ],
+        in: ["Gaji", "Bonus", "Usaha", "Tabungan", "Lainnya"],
+      };
+      const KW = {
+        Minuman: "kopi kenangan janji jiwa teh es boba jus minum",
+        Makanan: "makan nasi ayam bakso mie soto sate roti snack warteg resto",
+        Transport: "bensin parkir tol grab gojek ojek bus krl kereta",
+        Belanja: "belanja indomaret alfamart supermarket shopee tokopedia",
+        Tagihan: "listrik pulsa internet wifi air tagihan token cicilan kos",
+        Hiburan: "nonton bioskop netflix spotify game",
+        Kesehatan: "obat apotek dokter klinik",
+        Gaji: "gaji salary",
+        Bonus: "bonus thr",
+        Usaha: "jual untung usaha",
+      };
+      const IN_KW = "gaji bonus thr terima masuk untung jual salary".split(" ");
+      const COL = [
+        "#B9FF66",
+        "#191A23",
+        "#9aa0a6",
+        "#7bd389",
+        "#ffcf56",
+        "#ff8a65",
+        "#8ecae6",
+        "#c3b1ff",
+      ];
+      const MODEL = "gemini-flash-latest"; // jika scan error "model not found", ganti ke 'gemini-2.5-flash'
+      const EMPTY =
+        '<div class="empty"><svg width="90" height="90" viewBox="0 0 90 90"><circle cx="45" cy="45" r="36" fill="#B9FF66" stroke="#191A23" stroke-width="3"/><rect x="26" y="32" width="38" height="28" rx="6" fill="#fff" stroke="#191A23" stroke-width="3"/><path d="M26 42h38" stroke="#191A23" stroke-width="3"/></svg><p>Belum ada transaksi di sini.<br>Ketuk + untuk mencatat.</p></div>';
+      const $ = (s) => document.querySelector(s),
+        esc = (s) =>
+          String(s).replace(
+            /[&<>"]/g,
+            (c) =>
+              ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+          );
+      const rp = (n) => "Rp " + Math.round(n).toLocaleString("id-ID");
+      const iso = (d) =>
+        d.getFullYear() +
+        "-" +
+        String(d.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(d.getDate()).padStart(2, "0");
+      const today = () => iso(new Date());
+      const addDays = (s, n) => {
+        const d = new Date(s + "T00:00");
+        d.setDate(d.getDate() + n);
+        return iso(d);
+      };
+      const days = (f, t) =>
+        Math.round((new Date(t + "T00:00") - new Date(f + "T00:00")) / 864e5) +
+        1;
+      const inR = (x, f, t) => x.date >= f && x.date <= t;
+      const tot = (a, ty) =>
+        a.filter((x) => x.type === ty).reduce((s, x) => s + x.amt, 0);
+      const S = {
+        user: undefined,
+        ready: 0,
+        tx: [],
+        tab: "home",
+        per: "month",
+        q: "",
+        cat: "",
+        hf: "",
+        ht: "",
+        presets: JSON.parse(localStorage.presets || "null") || [
+          "Parkir 2rb",
+          "Bensin 30rb",
+          "Makan siang 25rb",
+          "Kopi 20rb",
+          "Tol 15rb",
+        ],
+      };
+      const n0 = new Date();
+      S.from = iso(new Date(n0.getFullYear(), n0.getMonth(), 1));
+      S.to = today();
+      let F = null;
+
+      function toast(m, bad, ms = 2600) {
+        const t = $("#toast");
+        t.textContent = m;
+        t.className = "show" + (bad ? " bad" : "");
+        clearTimeout(toast.t);
+        toast.t = setTimeout(() => (t.className = ""), ms);
+      }
+
+      // ---- Callback dari Firebase (didefinisikan di script module di bawah) ----
+      function onUser(u) {
+        S.user = u || null;
+        if (!u) {
+          S.tx = [];
+          S.ready = 0;
+          S.goals = [];
+          S.gReady = 0;
+          S.splits = [];
+          S.spReady = 0;
+          SB = null;
+        }
+        render();
+      }
+      function onTx(a) {
+        S.tx = a;
+        S.ready = 1;
+        softR();
+      }
+      function onPrefs(p) {
+        if (Array.isArray(p)) {
+          S.presets = p;
+          localStorage.presets = JSON.stringify(p);
+          render();
+        }
+      }
+      function onErr(e) {
+        toast("Gagal memuat data: " + e.message, 1);
+      }
+      function onNoConfig() {
+        S.noCfg = 1;
+        render();
+      }
+      function signIn() {
+        FB.signIn().catch((e) => toast("Gagal masuk: " + e.message, 1));
+      }
+      function logout() {
+        if (confirm("Keluar dari akun?")) {
+          FB.out();
+          S.tab = "home";
+          S.sub = "menu";
+        }
+      }
+
+      function save(t) {
+        if (!(t.amt > 0))
+          return (toast("Nominal harus lebih dari 0", 1), false);
+        if (!t.date) return (toast("Tanggal wajib diisi", 1), false);
+        const d = {
+          type: t.type,
+          amt: t.amt,
+          cat: t.cat,
+          note: t.note || "",
+          date: t.date,
+          ts: t.ts || Date.now(),
+        };
+        (t.id ? FB.set(t.id, d) : FB.add(d)).catch((e) =>
+          toast("Gagal menyimpan: " + e.message, 1),
+        );
+        toast(
+          navigator.onLine
+            ? "✓ Tersimpan: " + rp(t.amt) + " · " + t.cat
+            : "✓ Tersimpan di HP, disinkronkan saat online",
+        );
+        return true;
+      }
+
+      // ---- Smart Text Bar ----
+      function parse(s) {
+        s = s.trim();
+        const re = /(\d[\d.,]*)\s*(rb|ribu|k|jt|juta)?(?![a-z])/gi;
+        let m,
+          all = [];
+        while ((m = re.exec(s))) all.push(m);
+        if (!all.length) return null;
+        const m1 = [...all].reverse().find((x) => x[2]) || all[all.length - 1],
+          u = (m1[2] || "").toLowerCase();
+        let v;
+        if (u) {
+          v =
+            parseFloat(m1[1].replace(",", ".")) *
+            (u === "jt" || u === "juta" ? 1e6 : 1e3);
+        } else v = parseInt(m1[1].replace(/[.,]/g, ""), 10);
+        if (!(v > 0)) return null;
+        let note = (
+          s.slice(0, m1.index) +
+          " " +
+          s.slice(m1.index + m1[0].length)
+        )
+          .replace(/\s+/g, " ")
+          .trim();
+        const low = s.toLowerCase(),
+          type = IN_KW.some((w) => low.includes(w)) ? "in" : "out";
+        let cat = "Lainnya";
+        for (const c in KW)
+          if (
+            CATS[type].includes(c) &&
+            KW[c].split(" ").some((w) => low.includes(w))
+          ) {
+            cat = c;
+            break;
+          }
+        note = note ? note[0].toUpperCase() + note.slice(1) : cat;
+        return { type, amt: Math.round(v), cat, note, date: today() };
+      }
+      function pv(v) {
+        const p = parse(v);
+        $("#pv").textContent = p
+          ? (p.type === "in" ? "Pemasukan" : "Pengeluaran") +
+            " · " +
+            p.cat +
+            " · " +
+            rp(p.amt) +
+            " · " +
+            p.note
+          : "";
+      }
+      function quick(s) {
+        const p = parse(s);
+        if (!p)
+          return (toast("Nominal tidak terbaca. Contoh: Kopi 22rb", 1), false);
+        return save(p);
+      }
+      function qs() {
+        if (quick($("#sb").value)) {
+          $("#sb").value = "";
+          pv("");
+        }
+      }
+
+      // ---- Periode ----
+      function range() {
+        const n = new Date(),
+          t = today();
+        if (S.per === "day") return [t, t];
+        if (S.per === "week") {
+          const d = new Date(n);
+          d.setDate(n.getDate() - ((n.getDay() + 6) % 7));
+          return [iso(d), t];
+        }
+        if (S.per === "month")
+          return [iso(new Date(n.getFullYear(), n.getMonth(), 1)), t];
+        return [S.from || t, S.to || t];
+      }
+      function prevRange(f, t) {
+        const L = days(f, t);
+        if (S.per === "month") {
+          const d = new Date(f + "T00:00");
+          d.setMonth(d.getMonth() - 1);
+          const pf = iso(d);
+          return [pf, addDays(pf, L - 1)];
+        }
+        const pf = addDays(f, S.per === "week" ? -7 : -L);
+        return [pf, addDays(pf, L - 1)];
+      }
+      function perBar() {
+        return (
+          '<div class="row">' +
+          [
+            ["day", "Hari Ini"],
+            ["week", "Minggu Ini"],
+            ["month", "Bulan Ini"],
+            ["custom", "Custom"],
+          ]
+            .map(
+              ([k, l]) =>
+                `<button class="chip ${S.per === k ? "on" : ""}" onclick="S.per='${k}';render()">${l}</button>`,
+            )
+            .join("") +
+          "</div>" +
+          (S.per === "custom"
+            ? `<div class="row2"><input type="date" value="${S.from}" onchange="S.from=this.value;render()"><input type="date" value="${S.to}" onchange="S.to=this.value;render()"></div>`
+            : "")
+        );
+      }
+
+      // ---- Halaman ----
+      function ins(cur, f, t) {
+        const [pf, pt] = prevRange(f, t),
+          po = tot(
+            S.tx.filter((x) => inR(x, pf, pt)),
+            "out",
+          ),
+          o = cur.filter((x) => x.type === "out"),
+          ot = tot(cur, "out");
+        if (!o.length)
+          return (
+            '<div class="card"><span class="hl">Insight</span>' +
+            EMPTY +
+            "</div>"
+          );
+        const g = {};
+        o.forEach(
+          (x) => (g[x.cat || "Lainnya"] = (g[x.cat || "Lainnya"] || 0) + x.amt),
+        );
+        const [tc, tv] = Object.entries(g).sort((a, b) => b[1] - a[1])[0],
+          d = days(f, t > today() ? today() : t),
+          p = po ? Math.round(((ot - po) / po) * 100) : null;
+        return `<div class="card"><span class="hl">Insight</span><p>🏆 Terbesar: <b>${esc(tc)}</b> ${rp(tv)} (${Math.round((tv / ot) * 100)}%)</p><p>📅 Rata-rata harian: <b>${rp(ot / Math.max(1, d))}</b></p><p>${p === null ? "↔ Belum ada data periode sebelumnya" : p > 0 ? `▲ Pengeluaran naik <b>${p}%</b> dari periode lalu` : `▼ Pengeluaran turun <b>${-p}%</b> dari periode lalu`}</p></div>`;
+      }
+      function rHome() {
+        const [f, t] = range(),
+          cur = S.tx.filter((x) => inR(x, f, t)),
+          i = tot(cur, "in"),
+          o = tot(cur, "out");
+        return `<section class="pg"><span class="hl">Ringkasan</span>${perBar()}
+  ${!S.ready ? '<div class="sk"></div><div class="sk"></div>' : `<div class="card k"><div style="opacity:.7">Saldo bersih</div><div class="amt" style="text-align:left;color:var(--lime)">${rp(i - o)}</div><div class="hd"><span>⬇ Masuk<br><b>${rp(i)}</b></span><span style="text-align:right">⬆ Keluar<br><b>${rp(o)}</b></span></div></div>`}
+  <div class="card"><span class="hl">Catat Cepat</span>
+  <input id="sb" placeholder="Contoh: Kopi Kenangan 22rb" oninput="pv(this.value)" onkeydown="if(event.key==='Enter')qs()"><div id="pv" class="pv"></div>
+  <button class="btn k big" style="margin:8px 0" onclick="qs()">Catat</button>
+  <div class="row wrap">${S.presets.map((p, k) => `<button class="chip" onclick="quick(S.presets[${k}])">${esc(p)}</button>`).join("")}</div></div>
+  ${homeDue()}${S.ready ? ins(cur, f, t) : ""}</section>`;
+      }
+      function rHist() {
+        const cs = [...new Set(S.tx.map((x) => x.cat).filter(Boolean))].sort();
+        return `<section class="pg"><span class="hl">Riwayat</span><div class="card" style="padding:12px">
+  <input placeholder="🔍 Cari catatan atau kategori" value="${esc(S.q)}" oninput="S.q=this.value;hl()">
+  <select onchange="S.cat=this.value;hl()"><option value="">Semua kategori</option>${cs.map((c) => `<option ${S.cat === c ? "selected" : ""}>${esc(c)}</option>`).join("")}</select>
+  <div class="row2"><input type="date" value="${S.hf}" onchange="S.hf=this.value;hl()"><input type="date" value="${S.ht}" onchange="S.ht=this.value;hl()"></div></div>
+  <div class="card" id="hl"></div></section>`;
+      }
+      function hl() {
+        const q = S.q.toLowerCase();
+        const a = S.tx
+          .filter(
+            (x) =>
+              (!S.cat || x.cat === S.cat) &&
+              (!S.hf || x.date >= S.hf) &&
+              (!S.ht || x.date <= S.ht) &&
+              (!q || ((x.note || "") + " " + x.cat).toLowerCase().includes(q)),
+          )
+          .sort(
+            (a, b) => b.date.localeCompare(a.date) || (b.ts || 0) - (a.ts || 0),
+          )
+          .slice(0, 150);
+        $("#hl").innerHTML = a.length
+          ? a
+              .map(
+                (x) =>
+                  `<div class="tx" onclick="edit('${x.id}')"><div><span class="pill">${esc(x.cat || "-")}</span><div>${esc(x.note || "-")}</div><small>${x.date}</small></div><b class="${x.type === "in" ? "in" : ""}">${x.type === "in" ? "+" : "−"}${rp(x.amt)}</b></div>`,
+              )
+              .join("")
+          : EMPTY;
+      }
+      function rChart() {
+        const [f, t] = range(),
+          cur = S.tx.filter((x) => inR(x, f, t)),
+          i = tot(cur, "in"),
+          ot = tot(cur, "out");
+        if (!cur.length)
+          return `<section class="pg"><span class="hl">Grafik</span>${perBar()}<div class="card">${EMPTY}</div></section>`;
+        const g = {};
+        cur
+          .filter((x) => x.type === "out")
+          .forEach(
+            (x) =>
+              (g[x.cat || "Lainnya"] = (g[x.cat || "Lainnya"] || 0) + x.amt),
+          );
+        const e = Object.entries(g).sort((a, b) => b[1] - a[1]);
+        let a = 0;
+        const grad = e
+          .map(([, v], k) => {
+            const s = a;
+            a += (v / ot) * 100;
+            return `${COL[k % 8]} ${s}% ${a}%`;
+          })
+          .join(",");
+        const mon = days(f, t) > 31,
+          B = {};
+        cur.forEach((x) => {
+          const k = mon ? x.date.slice(0, 7) : x.date;
+          (B[k] = B[k] || { in: 0, out: 0 })[x.type] += x.amt;
+        });
+        const ks = Object.keys(B).sort(),
+          mx = Math.max(1, ...ks.map((k) => Math.max(B[k].in, B[k].out))),
+          mm = Math.max(i, ot, 1);
+        return `<section class="pg"><span class="hl">Grafik</span>${perBar()}
+  <div class="card"><b>Pengeluaran per kategori</b>${ot ? `<div class="donut" style="background:conic-gradient(${grad})"></div>` + e.map(([c, v], k) => `<div class="tx"><span><span class="pill" style="background:${COL[k % 8]};color:${k === 1 ? "#fff" : "#191A23"}">&nbsp;</span> ${esc(c)}</span><b>${rp(v)} · ${Math.round((v / ot) * 100)}%</b></div>`).join("") : "<p>Belum ada pengeluaran.</p>"}</div>
+  <div class="card"><b>Tren ${mon ? "bulanan" : "harian"}</b> <small>(lime = masuk, hitam = keluar)</small><div class="bars">${ks.map((k) => `<div class="bc"><div class="bb"><i style="height:${(B[k].in / mx) * 100}%;background:var(--lime)"></i><i style="height:${(B[k].out / mx) * 100}%;background:var(--ink)"></i></div>${mon ? k.slice(5) : k.slice(8)}</div>`).join("")}</div></div>
+  <div class="card"><b>Pemasukan vs pengeluaran</b><p>Masuk ${rp(i)}</p><div class="cmp" style="background:linear-gradient(90deg,var(--lime) ${(i / mm) * 100}%,#fff 0)"></div><p style="margin-top:0">Keluar ${rp(ot)}</p><div class="cmp" style="background:linear-gradient(90deg,var(--ink) ${(ot / mm) * 100}%,#fff 0)"></div></div></section>`;
+      }
+      function rSet() {
+        return `<section class="pg">${hdr("Pengaturan", "menu")}
+  <div class="card"><b>Akun</b><p>${esc(S.user.email || S.user.displayName || "")}</p><button class="btn k big" onclick="logout()">Keluar</button></div>
+  <div class="card"><b>Preset Catat Cepat</b>
+  ${S.presets.map((p, k) => `<div class="tx"><span>${esc(p)}</span><button class="x" onclick="delP(${k})">✕</button></div>`).join("")}
+  <input id="np" placeholder="Preset baru, mis. Makan malam 35rb"><button class="btn big" onclick="addP()">Tambah preset</button></div>
+  <div class="card"><b>Scan Struk</b><p>✅ Fitur scan struk siap digunakan.</p></div>
+  <div class="card"><b>Data</b><button class="btn big" onclick="exportCsv()">⬇ Ekspor ke CSV</button></div></section>`;
+      }
+      function saveKey() {
+        localStorage.gkey = $("#gk").value.trim();
+        toast("✓ Key tersimpan");
+      }
+      function addP() {
+        const v = $("#np").value.trim();
+        if (!parse(v)) return toast("Tulis nominal juga, mis. Parkir 2rb", 1);
+        S.presets.push(v);
+        savP();
+      }
+      function delP(k) {
+        S.presets.splice(k, 1);
+        savP();
+      }
+      function savP() {
+        localStorage.presets = JSON.stringify(S.presets);
+        FB.prefs(S.presets).catch(() => {});
+        render();
+      }
+      function exportCsv() {
+        const a = [...S.tx].sort((x, y) => y.date.localeCompare(x.date));
+        const rows = [
+          ["Tanggal", "Jenis", "Kategori", "Nominal", "Catatan"],
+          ...a.map((x) => [
+            x.date,
+            x.type === "in" ? "Pemasukan" : "Pengeluaran",
+            x.cat,
+            x.amt,
+            x.note,
+          ]),
+        ];
+        const csv = rows
+          .map((r) =>
+            r
+              .map(
+                (v) =>
+                  '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"',
+              )
+              .join(","),
+          )
+          .join("\n");
+        const l = document.createElement("a");
+        l.href = URL.createObjectURL(
+          new Blob(["\ufeff" + csv], { type: "text/csv" }),
+        );
+        l.download = "kas-kilat.csv";
+        l.click();
+      }
+      // ================= FITUR BARU: LAINNYA, CELENGAN, SPLIT BILL =================
+      Object.assign(S, {
+        sub: "menu",
+        goals: [],
+        gReady: 0,
+        gErr: "",
+        splits: [],
+        spReady: 0,
+        sErr: "",
+        showArc: 0,
+      });
+      let SB = null,
+        LP = null,
+        LPF = 0;
+      const DEF_CHIPS = [10000, 50000, 100000];
+      const GSET = [
+        ["🐷", "#B9FF66"],
+        ["✈️", "#8ecae6"],
+        ["🏠", "#ffcf56"],
+        ["📱", "#c3b1ff"],
+        ["🎓", "#ff8a65"],
+        ["🚗", "#7bd389"],
+      ];
+      const PER = {
+        day: ["Harian", "hari"],
+        week: ["Mingguan", "minggu"],
+        month: ["Bulanan", "bulan"],
+      };
+      const PNOW = { day: "hari ini", week: "minggu ini", month: "bulan ini" };
+      const SKS = '<div class="sk"></div><div class="sk"></div>';
+      const EMPTY_G =
+        '<div class="empty"><svg width="120" height="96" viewBox="0 0 120 96"><circle cx="56" cy="12" r="8" fill="#fff" stroke="#191A23" stroke-width="3"/><ellipse cx="56" cy="54" rx="40" ry="28" fill="#B9FF66" stroke="#191A23" stroke-width="3"/><path d="M28 36L34 18L50 30Z" fill="#B9FF66" stroke="#191A23" stroke-width="3" stroke-linejoin="round"/><rect x="88" y="46" width="16" height="14" rx="5" fill="#fff" stroke="#191A23" stroke-width="3"/><circle cx="76" cy="42" r="3" fill="#191A23"/><path d="M44 31h20" stroke="#191A23" stroke-width="4" stroke-linecap="round"/><rect x="34" y="78" width="10" height="12" rx="3" fill="#fff" stroke="#191A23" stroke-width="3"/><rect x="66" y="78" width="10" height="12" rx="3" fill="#fff" stroke="#191A23" stroke-width="3"/></svg><p>Belum ada celengan.<br>Buat target tabungan pertamamu.</p></div>';
+      const EMPTY_S =
+        '<div class="empty"><svg width="100" height="96" viewBox="0 0 100 96"><circle cx="50" cy="48" r="40" fill="#B9FF66" stroke="#191A23" stroke-width="3"/><path d="M28 18h44v58l-7-5-7 5-8-5-8 5-7-5-7 5z" fill="#fff" stroke="#191A23" stroke-width="3" stroke-linejoin="round"/><path d="M36 32h28M36 44h28M36 56h16" stroke="#191A23" stroke-width="3" stroke-linecap="round"/></svg><p>Belum ada split bill.<br>Bagi tagihan bareng teman dengan adil.</p></div>';
+      const hdr = (t, to) =>
+        `<div class="back"><button class="x" onclick="S.sub='${to}';render();scrollTo(0,0)">←</button><span class="hl">${t}</span></div>`;
+      const errCard = (m) =>
+        `<div class="card"><b>⚠️ Gagal memuat</b><p>${esc(m)}</p><p>Pastikan Firestore Rules terbaru sudah di-publish.</p></div>`;
+      const fmtD = (s) =>
+        s
+          ? new Date(s + "T00:00").toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })
+          : "";
+      const lbl = (v) =>
+        v >= 1e6 && v % 1e5 === 0
+          ? (v / 1e6).toString().replace(".", ",") + "jt"
+          : v >= 1000 && v % 1000 === 0
+            ? v / 1000 + "rb"
+            : v.toLocaleString("id-ID");
+
+      // Nominal singkat: "25rb", "1,5jt", "50.000", "50000"
+      function pAmt(s) {
+        s = String(s == null ? "" : s)
+          .toLowerCase()
+          .replace(/rp\.?/g, "")
+          .replace(/\s+/g, "");
+        const m = s.match(/^(\d+(?:[.,]\d+)*)(rb|ribu|k|jt|juta)?$/);
+        if (!m) return null;
+        let n = m[1],
+          u = m[2],
+          v;
+        if (u) {
+          if ((n.match(/[.,]/g) || []).length > 1) n = n.replace(/[.,]/g, "");
+          v =
+            parseFloat(n.replace(",", ".")) *
+            (u === "jt" || u === "juta" ? 1e6 : 1e3);
+        } else if (/^\d+$/.test(n)) v = +n;
+        else if (/^\d{1,3}([.,]\d{3})+$/.test(n)) v = +n.replace(/[.,]/g, "");
+        else return null;
+        v = Math.round(v);
+        return v > 0 && v <= 1e12 ? v : null;
+      }
+
+      // ---- callback data baru ----
+      function softR() {
+        if (S.tab === "more" && S.sub === "split") return;
+        render();
+      }
+      function onGoals(a) {
+        S.goals = a
+          .map((g) => ({ ...g, saved: +g.saved || 0, target: +g.target || 1 }))
+          .sort((x, y) => (y.ts || 0) - (x.ts || 0));
+        S.gReady = 1;
+        S.gErr = "";
+        softR();
+        if (F && (F.mode === "gmove" || F.mode === "gdet")) drawSheet();
+      }
+      function onGErr(e) {
+        S.gReady = 1;
+        S.gErr = e.message;
+        softR();
+      }
+      function onSplits(a) {
+        S.splits = a.sort((x, y) => (y.ts || 0) - (x.ts || 0));
+        S.spReady = 1;
+        S.sErr = "";
+        softR();
+      }
+      function onSErr(e) {
+        S.spReady = 1;
+        S.sErr = e.message;
+        softR();
+      }
+      function openF(o) {
+        if (F && F.unsub) F.unsub();
+        F = o;
+        drawSheet();
+      }
+
+      // ---- Menu Lainnya ----
+      function rMore() {
+        if (S.sub === "goals") return rGoals();
+        if (S.sub === "splits") return rSplits();
+        if (S.sub === "split" && SB) return rSplit();
+        if (S.sub === "set") return rSet();
+        const act = S.goals.filter((g) => !g.archived),
+          sum = act.reduce((s, g) => s + g.saved, 0);
+        const m = (sub, ic, t, d) =>
+          `<button class="card menu" onclick="S.sub='${sub}';render();scrollTo(0,0)"><span class="ic">${ic}</span><span><b style="font-size:17px">${t}</b><small>${d}</small></span></button>`;
+        return `<section class="pg"><span class="hl">Lainnya</span>
+  ${m("goals", "🐷", "Celengan", S.gReady ? (act.length ? act.length + " aktif · terkumpul " + rp(sum) : "Belum ada celengan") : "Memuat…")}
+  ${m("splits", "🧾", "Split Bill", S.spReady ? (S.splits.length ? S.splits.length + " riwayat" : "Bagi tagihan bareng teman") : "Memuat…")}
+  ${m("set", "⚙️", "Pengaturan", "Akun, preset, scan struk, ekspor data")}</section>`;
+      }
+      function homeDue() {
+        const d = S.goals.filter(gDue).slice(0, 3);
+        return d.length
+          ? `<div class="card g" style="cursor:pointer" onclick="S.tab='more';S.sub='goals';render();scrollTo(0,0)"><span class="hl">⏰ Pengingat celengan</span>${d.map((g) => `<p>${esc(g.emoji || "🐷")} <b>${esc(g.name)}</b> belum setor ${PNOW[g.routine.period]} (${rp(g.routine.amt)})</p>`).join("")}</div>`
+          : "";
+      }
+
+      // ================= CELENGAN =================
+      const gOf = (id) => S.goals.find((g) => g.id === id);
+      const gChips = (g) => (Array.isArray(g.chips) ? g.chips : DEF_CHIPS);
+      const gPct = (g) => Math.min(100, Math.floor((g.saved / g.target) * 100));
+      const gDone = (g) => g.saved >= g.target;
+      function perStart(p) {
+        const n = new Date();
+        if (p === "day") return today();
+        if (p === "week") {
+          const d = new Date(n);
+          d.setDate(n.getDate() - ((n.getDay() + 6) % 7));
+          return iso(d);
+        }
+        return iso(new Date(n.getFullYear(), n.getMonth(), 1));
+      }
+      const gDue = (g) =>
+        !g.archived &&
+        !gDone(g) &&
+        g.routine &&
+        (g.lastRoutine || "") < perStart(g.routine.period);
+      function gEst(g) {
+        const rem = g.target - g.saved;
+        if (rem <= 0 || !g.deadline) return "";
+        const d = Math.round(
+          (new Date(g.deadline + "T00:00") - new Date(today() + "T00:00")) /
+            864e5,
+        );
+        if (d < 0)
+          return `<div class="warn">⚠️ Lewat tenggat ${-d} hari · kurang ${rp(rem)}</div>`;
+        if (d === 0)
+          return `<div class="warn">⏳ Tenggat hari ini · kurang ${rp(rem)}</div>`;
+        const wk = Math.ceil(rem / Math.max(1, d / 7));
+        if (d >= 30)
+          return `<p>🎯 Butuh <b>${rp(Math.ceil(rem / (d / 30.4375)))}/bulan</b> · ${rp(wk)}/minggu (${d} hari lagi)</p>`;
+        if (d >= 7)
+          return `<p>🎯 Butuh <b>${rp(wk)}/minggu</b> (${d} hari lagi)</p>`;
+        return `<p>🎯 ${d} hari lagi · butuh <b>${rp(Math.ceil(rem / d))}/hari</b></p>`;
+      }
+      function gCard(g) {
+        const p = gPct(g),
+          done = gDone(g),
+          r = g.routine,
+          col = esc(g.color || "#B9FF66"),
+          id = g.id;
+        const acts = g.archived
+          ? `<button class="btn sm" onclick="gDetail('${id}')">🕘 Riwayat</button><button class="btn sm" onclick="gArc('${id}',false)">♻️ Pulihkan</button><button class="btn sm" onclick="gEdit('${id}')">✎ Edit</button>`
+          : `<button class="btn sm k" onclick="gOpenMove('${id}','in')">＋ Setor</button><button class="btn sm" onclick="gOpenMove('${id}','out')">− Tarik</button><button class="btn sm" onclick="gEdit('${id}')">✎ Edit</button><button class="btn sm" onclick="gDetail('${id}')">🕘 Riwayat</button>${done ? `<button class="btn sm" onclick="gArc('${id}',true)">📦 Arsipkan</button>` : ""}`;
+        return `<div class="card ${S.popId === id ? "pop" : ""}">
+  <div class="gh"><div class="gi" style="background:${col}">${esc(g.emoji || "🐷")}</div><div style="flex:1;min-width:0"><b style="font-size:17px;word-break:break-word">${esc(g.name)}</b><div style="margin-top:4px">${done ? '<span class="st">✓ Tercapai</span> ' : ""}${g.archived ? '<span class="st gr">📦 Arsip</span> ' : ""}${g.deadline ? `<small>⏳ ${fmtD(g.deadline)}</small>` : ""}</div></div></div>
+  <div class="bar"><i class="${p ? "" : "z"}" style="width:${p}%;background:${col}"></i><span>${p}%</span></div>
+  <div class="hd"><span><b>${rp(g.saved)}</b><br><small>terkumpul</small></span><span style="text-align:right"><b>${rp(g.target)}</b><br><small>target</small></span></div>
+  ${g.archived ? "" : gEst(g)}
+  ${gDue(g) ? `<div class="warn">⏰ Belum setor ${PNOW[r.period]}</div>` : ""}
+  ${r && !g.archived && !done ? `<button class="btn k big" style="margin:10px 0 0" onclick="gRoutine('${id}')">⚡ Setor ${rp(r.amt)} <small>(${PER[r.period][0].toLowerCase()})</small></button>` : ""}
+  <div class="row wrap" style="margin-top:10px">${acts}</div></div>`;
+      }
+      function rGoals() {
+        const act = S.goals.filter((g) => !g.archived),
+          arc = S.goals.filter((g) => g.archived),
+          sum = act.reduce((s, g) => s + g.saved, 0),
+          tg = act.reduce((s, g) => s + g.target, 0);
+        let b;
+        if (S.gErr && !S.goals.length) b = errCard(S.gErr);
+        else if (!S.gReady) b = SKS;
+        else if (!S.goals.length)
+          b = `<div class="card">${EMPTY_G}<button class="btn k big" onclick="gNew()">+ Buat celengan pertama</button></div>`;
+        else
+          b = `<div class="card k"><div style="opacity:.7">Total tabungan aktif</div><div class="amt" style="text-align:left;color:var(--lime)">${rp(sum)}</div><small>dari target ${rp(tg)} · ${act.length} celengan</small></div>
+  <button class="btn big" onclick="gNew()">+ Celengan baru</button>
+  ${act.map(gCard).join("") || '<div class="card g">Semua celengan sudah diarsipkan.</div>'}
+  ${arc.length ? `<button class="chip" onclick="S.showArc=!S.showArc;render()">📦 Arsip (${arc.length}) ${S.showArc ? "▲" : "▼"}</button>` + (S.showArc ? arc.map(gCard).join("") : "") : ""}`;
+        return `<section class="pg">${hdr("Celengan", "menu")}${b}</section>`;
+      }
+      function gNew() {
+        openF({
+          mode: "gform",
+          id: null,
+          name: "",
+          target: "",
+          deadline: "",
+          ci: 0,
+          rt: false,
+          ramt: "",
+          rper: "week",
+        });
+      }
+      function gEdit(id) {
+        const g = gOf(id);
+        if (!g) return;
+        const r = g.routine,
+          ci = GSET.findIndex((s) => s[0] === g.emoji);
+        openF({
+          mode: "gform",
+          id,
+          name: g.name,
+          target: String(g.target),
+          deadline: g.deadline || "",
+          ci: ci < 0 ? 0 : ci,
+          rt: !!r,
+          ramt: r ? String(r.amt) : "",
+          rper: r ? r.period : "week",
+        });
+      }
+      function gPvT() {
+        const v = pAmt(F.target);
+        return v
+          ? "= " + rp(v)
+          : F.target
+            ? "Format tidak dikenali (contoh 25rb, 1,5jt, 50.000)"
+            : "";
+      }
+      function gPv() {
+        $("#gpv").textContent = gPvT();
+      }
+      function gFormH(cl) {
+        const f = F;
+        return `<div class="pn"><div class="hd"><span class="hl">${f.id ? "Edit" : "Buat"} Celengan</span>${cl}</div>
+  <label class="lab">Nama celengan</label><input maxlength="40" placeholder="mis. Liburan Bali" value="${esc(f.name)}" oninput="F.name=this.value">
+  <label class="lab">Target nominal</label><input placeholder="mis. 5jt atau 5.000.000" value="${esc(f.target)}" oninput="F.target=this.value;gPv()"><div class="pv" id="gpv">${gPvT()}</div>
+  <label class="lab">Tenggat (opsional)</label><div class="row2"><input type="date" value="${esc(f.deadline)}" ${f.id ? "" : `min="${today()}"`} oninput="F.deadline=this.value" style="margin-top:0"><button class="chip" onclick="F.deadline='';drawSheet()">Hapus</button></div>
+  <label class="lab">Ikon & warna</label><div class="row wrap">${GSET.map((s, i) => `<button class="gi ${f.ci === i ? "sel" : ""}" style="background:${s[1]}" onclick="F.ci=${i};drawSheet()">${s[0]}</button>`).join("")}</div>
+  <label class="chk"><input type="checkbox" ${f.rt ? "checked" : ""} onchange="F.rt=this.checked;drawSheet()"> Setoran rutin</label>
+  ${
+    f.rt
+      ? `<div class="row2"><input placeholder="Nominal, mis. 50rb" value="${esc(f.ramt)}" oninput="F.ramt=this.value"><select onchange="F.rper=this.value" style="width:auto">${Object.entries(
+          PER,
+        )
+          .map(
+            ([k, v]) =>
+              `<option value="${k}" ${f.rper === k ? "selected" : ""}>${v[0]}</option>`,
+          )
+          .join("")}</select></div>`
+      : ""
+  }
+  <button class="btn k big" onclick="gSave()">Simpan</button>
+  ${f.id ? `<button class="btn big" style="background:#fff" onclick="gDel('${f.id}')">🗑 Hapus celengan</button>` : ""}</div>`;
+      }
+      function gSave() {
+        const name = (F.name || "").trim(),
+          target = pAmt(F.target);
+        if (!name) return toast("Nama celengan wajib diisi", 1);
+        if (name.length > 40) return toast("Nama maksimal 40 karakter", 1);
+        if (!target)
+          return toast("Target harus nominal lebih dari 0, mis. 5jt", 1);
+        if (F.deadline && !F.id && F.deadline < today())
+          return toast("Tenggat tidak boleh di masa lalu", 1);
+        let routine = null;
+        if (F.rt) {
+          const a = pAmt(F.ramt);
+          if (!a)
+            return toast("Nominal setoran rutin tidak valid, mis. 50rb", 1);
+          routine = { amt: a, period: F.rper };
+        }
+        const [emoji, color] = GSET[F.ci],
+          d = {
+            name,
+            target,
+            deadline: F.deadline || "",
+            emoji,
+            color,
+            routine,
+          },
+          er = (e) => toast("Gagal menyimpan: " + e.message, 1);
+        if (F.id) {
+          const g = gOf(F.id);
+          if (g) Object.assign(g, d);
+          FB.goalUpd(F.id, d).catch(er);
+        } else
+          FB.goalNew({
+            ...d,
+            saved: 0,
+            archived: false,
+            chips: [...DEF_CHIPS],
+            lastRoutine: "",
+            ts: Date.now(),
+          }).catch(er);
+        toast("✓ Celengan tersimpan");
+        closeSheet();
+        softR();
+      }
+      function gArc(id, flag) {
+        const g = gOf(id);
+        if (g) g.archived = flag;
+        FB.goalUpd(id, { archived: flag }).catch((e) =>
+          toast("Gagal: " + e.message, 1),
+        );
+        toast(flag ? "📦 Celengan diarsipkan" : "♻️ Celengan dipulihkan");
+        softR();
+      }
+      function gDel(id) {
+        const g = gOf(id);
+        if (!g) return;
+        if (
+          !confirm(
+            'Hapus celengan "' +
+              g.name +
+              '"?\nRiwayat setoran ikut terhapus dan tidak bisa dibatalkan. Catatan di Beranda tidak berubah.',
+          )
+        )
+          return;
+        FB.goalDel(id).catch((e) => toast("Gagal menghapus: " + e.message, 1));
+        S.goals = S.goals.filter((x) => x.id !== id);
+        toast("✓ Celengan terhapus");
+        closeSheet();
+        softR();
+      }
+      function gOpenMove(id, type) {
+        if (!gOf(id)) return;
+        openF({
+          mode: "gmove",
+          gid: id,
+          type,
+          amt: "",
+          date: today(),
+          exp: localStorage.gexp !== "0",
+        });
+      }
+      function gMoveH(cl) {
+        const g = gOf(F.gid);
+        if (!g)
+          return `<div class="pn"><div class="hd"><span class="hl">Celengan</span>${cl}</div><p>Celengan tidak ditemukan.</p></div>`;
+        const ch = gChips(g),
+          isIn = F.type === "in",
+          rem = Math.max(0, g.target - g.saved);
+        return `<div class="pn"><div class="hd"><span class="hl">${esc(g.emoji || "🐷")} ${esc(g.name)}</span>${cl}</div>
+  <div class="row">${[
+    ["in", "Setor"],
+    ["out", "Tarik"],
+  ]
+    .map(
+      ([k, l]) =>
+        `<button class="chip ${F.type === k ? "on" : ""}" onclick="F.type='${k}';drawSheet()">${l}</button>`,
+    )
+    .join("")}</div>
+  <small>Terkumpul ${rp(g.saved)} dari ${rp(g.target)}</small>
+  <div class="amt" id="amtv">${rp(+F.amt || 0)}</div>
+  <div class="row">${ch.map((v, i) => `<button class="chip" onpointerdown="lpDown(${i})" onpointerup="lpUp()" onpointerleave="lpUp()" onpointercancel="lpUp()" oncontextmenu="return false" onclick="chipTap(${i})">+${lbl(v)}</button>`).join("")}${ch.length < 6 ? '<button class="chip" onclick="chipEdit(-1)">＋ Chip</button>' : ""}<button class="chip" onclick="F.amt='';addA(0)">Reset</button></div>
+  <small>💡 Tahan lama sebuah chip untuk mengedit atau menghapus</small>
+  ${isIn ? (rem > 0 ? `<button class="btn big" style="background:#fff" onclick="F.amt='${rem}';addA(0)">Setor semua sisa target (${rp(rem)})</button>` : "") : g.saved > 0 ? `<button class="btn big" style="background:#fff" onclick="F.amt='${g.saved}';addA(0)">Tarik semua (${rp(g.saved)})</button>` : ""}
+  <div class="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9, "000", 0, "⌫"].map((k) => `<button onclick="np('${k}')">${k}</button>`).join("")}</div>
+  <input type="date" value="${esc(F.date)}" oninput="F.date=this.value">
+  <label class="chk"><input type="checkbox" ${F.exp ? "checked" : ""} onchange="F.exp=this.checked;localStorage.gexp=this.checked?'1':'0'"> ${isIn ? "Catat juga sebagai pengeluaran (kategori Tabungan)" : "Catat juga sebagai pemasukan (kembali ke saldo)"}</label>
+  <button class="btn k big" onclick="gSubmit()">${isIn ? "Setor" : "Tarik"}</button></div>`;
+      }
+      function lpDown(i) {
+        LPF = 0;
+        clearTimeout(LP);
+        LP = setTimeout(() => {
+          LPF = 1;
+          if (navigator.vibrate) navigator.vibrate(20);
+          chipEdit(i);
+        }, 500);
+      }
+      function lpUp() {
+        clearTimeout(LP);
+      }
+      function chipTap(i) {
+        if (LPF) {
+          LPF = 0;
+          return;
+        }
+        const g = gOf(F.gid);
+        if (g) addA(gChips(g)[i]);
+      }
+      function chipEdit(i) {
+        const g = gOf(F.gid);
+        if (!g) return;
+        if (i < 0 && gChips(g).length >= 6) return toast("Maksimal 6 chip", 1);
+        F = {
+          mode: "gchip",
+          gid: g.id,
+          i,
+          val: i >= 0 ? String(gChips(g)[i]) : "",
+          prev: F,
+        };
+        drawSheet();
+        setTimeout(() => {
+          const e = $("#cv");
+          if (e) e.focus();
+        }, 60);
+      }
+      function chipPv() {
+        const v = pAmt(F.val);
+        $("#cpv").textContent = v
+          ? "= " + rp(v)
+          : F.val
+            ? "Format tidak dikenali"
+            : "";
+      }
+      function gBack() {
+        F = F.prev || null;
+        drawSheet();
+      }
+      function gChipH() {
+        return `<div class="pn"><div class="hd"><span class="hl">${F.i >= 0 ? "Edit" : "Tambah"} chip</span><button class="x" onclick="gBack()">✕</button></div>
+  <label class="lab">Nominal</label><input id="cv" placeholder="mis. 25rb, 1,5jt, 50.000" value="${esc(F.val)}" oninput="F.val=this.value;chipPv()" onkeydown="if(event.key==='Enter')chipSave()"><div class="pv" id="cpv"></div>
+  <button class="btn k big" onclick="chipSave()">Simpan chip</button>
+  ${F.i >= 0 ? '<button class="btn big" style="background:#fff" onclick="chipDel()">🗑 Hapus chip</button>' : ""}</div>`;
+      }
+      function gChipsSet(g, a) {
+        g.chips = a;
+        FB.goalUpd(g.id, { chips: a }).catch((e) =>
+          toast("Gagal menyimpan chip: " + e.message, 1),
+        );
+      }
+      function chipSave() {
+        const g = gOf(F.gid),
+          v = pAmt(F.val);
+        if (!g) return;
+        if (!v)
+          return toast("Nominal tidak valid. Contoh: 25rb, 1,5jt, 50.000", 1);
+        if (v > 1e9) return toast("Nominal chip terlalu besar", 1);
+        const a = [...gChips(g)];
+        if (a.some((x, k) => x === v && k !== F.i))
+          return toast("Chip itu sudah ada", 1);
+        if (F.i >= 0) a[F.i] = v;
+        else {
+          if (a.length >= 6) return toast("Maksimal 6 chip", 1);
+          a.push(v);
+        }
+        gChipsSet(g, a);
+        toast("✓ Chip tersimpan");
+        gBack();
+      }
+      function chipDel() {
+        const g = gOf(F.gid);
+        if (!g) return;
+        const a = [...gChips(g)];
+        if (!confirm("Hapus chip +" + lbl(a[F.i]) + "?")) return;
+        a.splice(F.i, 1);
+        gChipsSet(g, a);
+        gBack();
+      }
+      function celebrate() {
+        toast("🎉 Target tercapai! Selamat!", 0, 3500);
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const c = document.createElement("div"),
+          cols = ["#B9FF66", "#191A23", "#ffcf56", "#fff", "#8ecae6"];
+        c.className = "conf";
+        for (let i = 0; i < 36; i++) {
+          const e = document.createElement("i"),
+            a = Math.random() * Math.PI * 2,
+            r = 120 + Math.random() * 180;
+          e.style.cssText = `left:50%;background:${cols[i % 5]};--dx:${Math.cos(a) * r}px;--dy:${Math.sin(a) * r - 80}px;--r:${Math.random() * 720}deg`;
+          c.appendChild(e);
+        }
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 1600);
+      }
+      function gMove(g, amt, type, date, exp) {
+        if (!(amt > 0)) return (toast("Nominal harus lebih dari 0", 1), false);
+        if (type === "out" && amt > g.saved)
+          return (toast("Saldo celengan hanya " + rp(g.saved), 1), false);
+        if (!date) return (toast("Tanggal wajib diisi", 1), false);
+        const was = gDone(g),
+          ns = g.saved + (type === "in" ? amt : -amt),
+          rt = type === "in" && g.routine && amt >= g.routine.amt,
+          upd = rt ? { lastRoutine: date } : {},
+          tx = exp
+            ? {
+                type: type === "in" ? "out" : "in",
+                amt,
+                cat: "Tabungan",
+                note:
+                  (type === "in"
+                    ? "Setor ke celengan "
+                    : "Tarik dari celengan ") + g.name,
+                date,
+                ts: Date.now(),
+              }
+            : null;
+        FB.goalMove(g.id, amt, type, date, tx, upd, rt).catch((e) =>
+          toast("Gagal menyimpan: " + e.message, 1),
+        );
+        g.saved = ns;
+        if (rt) g.lastRoutine = date;
+        toast(
+          (navigator.onLine ? "✓ " : "✓ Tersimpan di HP · ") +
+            (type === "in" ? "Setor " : "Tarik ") +
+            rp(amt) +
+            (type === "in" ? " ke " : " dari ") +
+            g.name,
+        );
+        if (type === "in" && !was && ns >= g.target) {
+          S.popId = g.id;
+          setTimeout(() => {
+            S.popId = null;
+          }, 1500);
+          setTimeout(celebrate, 300);
+        }
+        softR();
+        return true;
+      }
+      function gSubmit() {
+        const g = gOf(F.gid);
+        if (g && gMove(g, +F.amt, F.type, F.date, F.exp)) closeSheet();
+      }
+      function gRoutine(id) {
+        const g = gOf(id);
+        if (g && g.routine)
+          gMove(g, g.routine.amt, "in", today(), localStorage.gexp !== "0");
+      }
+      function gDetail(id) {
+        if (!gOf(id)) return;
+        const o = { mode: "gdet", gid: id };
+        o.unsub = FB.goalLog(
+          id,
+          (a) => {
+            if (F === o) {
+              o.log = a;
+              drawSheet();
+            }
+          },
+          () => {
+            if (F === o) {
+              o.log = [];
+              drawSheet();
+            }
+          },
+        );
+        openF(o);
+      }
+      function gDetH(cl) {
+        const g = gOf(F.gid);
+        if (!g)
+          return `<div class="pn"><div class="hd"><span class="hl">Riwayat</span>${cl}</div><p>Celengan tidak ditemukan.</p></div>`;
+        const L = F.log,
+          rows = !L
+            ? '<div class="sk" style="height:60px;margin:0 0 8px"></div><div class="sk" style="height:60px;margin:0"></div>'
+            : L.length
+              ? [...L]
+                  .sort((a, b) => (b.ts || 0) - (a.ts || 0))
+                  .slice(0, 100)
+                  .map(
+                    (x) =>
+                      `<div class="tx"><div><span class="pill">${x.type === "in" ? "Setor" : "Tarik"}${x.r ? " ⚡" : ""}</span><br><small>${fmtD(x.date)}</small></div><b class="${x.type === "in" ? "in" : ""}">${x.type === "in" ? "+" : "−"}${rp(x.amt)}</b></div>`,
+                  )
+                  .join("")
+              : '<div class="empty"><p>Belum ada setoran.<br>Mulai dengan ketuk Setor.</p></div>';
+        return `<div class="pn"><div class="hd"><span class="hl">${esc(g.emoji || "🐷")} ${esc(g.name)}</span>${cl}</div>
+  <p style="margin:10px 0">${rp(g.saved)} dari ${rp(g.target)} (${gPct(g)}%)${g.routine ? `<br>⚡ Rutin ${rp(g.routine.amt)} ${PER[g.routine.period][0].toLowerCase()}` : ""}</p>
+  <div class="row2"><button class="btn k" style="flex:1" onclick="gOpenMove('${g.id}','in')">＋ Setor</button><button class="btn" style="flex:1" onclick="gOpenMove('${g.id}','out')">− Tarik</button></div>
+  <div class="card" style="margin-top:14px">${rows}</div></div>`;
+      }
+      function gSheet() {
+        const cl = '<button class="x" onclick="closeSheet()">✕</button>';
+        if (F.mode === "gform") return gFormH(cl);
+        if (F.mode === "gmove") return gMoveH(cl);
+        if (F.mode === "gchip") return gChipH();
+        if (F.mode === "gdet") return gDetH(cl);
+        return "";
+      }
+
+      // ================= SPLIT BILL =================
+      const FEE = [
+        ["tax", "Pajak (PB1/PPN)", "mis. 10"],
+        ["svc", "Service charge", "mis. 5"],
+        ["disc", "Diskon", "mis. 20"],
+      ];
+      const newSB = () => ({
+        id: null,
+        title: "",
+        date: today(),
+        people: [{ id: "p0", name: "Aku" }],
+        pc: 1,
+        payer: "p0",
+        items: [],
+        ic: 0,
+        fee: {
+          tax: { m: "pct", v: 0 },
+          svc: { m: "pct", v: 0 },
+          disc: { m: "pct", v: 0 },
+        },
+        paid: {},
+        step: 1,
+        mine: false,
+        mcat: "Makanan",
+        mineTx: null,
+        ei: -1,
+        busy: 0,
+        dirty: 0,
+        ts: 0,
+        payAccounts: [], // [{type:"bank"|"qris", bank:"", no:"", name:""} ]
+      });
+      function loadSB(s) {
+        const B = newSB(),
+          num = (a) =>
+            a.reduce(
+              (m, x) => Math.max(m, parseInt(String(x.id).slice(1)) || 0),
+              -1,
+            ) + 1,
+          fe = (k) => {
+            const f = (s.tax && s.tax[k]) || {};
+            return { m: f.m === "amt" ? "amt" : "pct", v: +f.v || 0 };
+          };
+        B.id = s.id;
+        B.title = s.title || "";
+        B.date = s.date || today();
+        B.people = (s.people || []).map((p) => ({ id: p.id, name: p.name }));
+        B.items = (s.items || []).map((i) => ({
+          id: i.id,
+          n: i.n,
+          p: +i.p || 0,
+          q: +i.q || 1,
+          w: [...(i.w || [])],
+        }));
+        B.pc = num(B.people);
+        B.ic = num(B.items);
+        B.payer = s.payer || "p0";
+        B.fee = { tax: fe("tax"), svc: fe("svc"), disc: fe("disc") };
+        B.paid = { ...(s.paid || {}) };
+        B.mineTx = s.mineTx || null;
+        B.mine = !!s.mineTx;
+        const t = B.mineTx && S.tx.find((x) => x.id === B.mineTx);
+        if (t && t.cat) B.mcat = t.cat;
+        B.payAccounts = (s.payAccounts || []).map((a) => ({
+          type: a.type || "bank",
+          bank: a.bank || "",
+          no: a.no || "",
+          name: a.name || "",
+        }));
+        B.step = 5;
+        B.ts = s.ts || 0;
+        return B;
+      }
+      function sbCalc(B) {
+        const base = {};
+        B.people.forEach((p) => (base[p.id] = 0));
+        let sub = 0;
+        B.items.forEach((it) => {
+          const w = it.w.filter((id) => id in base);
+          if (!w.length) return;
+          const t = it.p * it.q;
+          sub += t;
+          w.forEach((id) => (base[id] += t / w.length));
+        });
+        const f = B.fee,
+          pos = (x) => Math.max(0, x),
+          disc =
+            f.disc.m === "pct"
+              ? (sub * Math.min(100, pos(f.disc.v))) / 100
+              : Math.min(sub, pos(f.disc.v)),
+          after = sub - disc,
+          svc = f.svc.m === "pct" ? (after * pos(f.svc.v)) / 100 : pos(f.svc.v),
+          tax =
+            f.tax.m === "pct"
+              ? ((after + svc) * pos(f.tax.v)) / 100
+              : pos(f.tax.v),
+          grand = Math.round(after + svc + tax),
+          k = sub ? grand / sub : 0,
+          share = {};
+        let others = 0;
+        B.people.forEach((p) => {
+          if (p.id !== B.payer) {
+            const x = Math.round((base[p.id] * k) / 100) * 100;
+            share[p.id] = x;
+            others += x;
+          }
+        });
+        share[B.payer] = Math.max(0, grand - others);
+        return {
+          sub,
+          disc: Math.round(disc),
+          svc: Math.round(svc),
+          tax: Math.round(tax),
+          grand,
+          share,
+        };
+      }
+      function rSplits() {
+        let b;
+        if (S.sErr && !S.splits.length) b = errCard(S.sErr);
+        else if (!S.spReady) b = SKS;
+        else if (!S.splits.length)
+          b = `<div class="card">${EMPTY_S}<button class="btn k big" onclick="sNew()">+ Split baru</button></div>`;
+        else
+          b =
+            `<button class="btn k big" onclick="sNew()">+ Split baru</button>` +
+            S.splits
+              .map((s) => {
+                const B = loadSB(s),
+                  c = sbCalc(B),
+                  d = B.people.filter(
+                    (p) => p.id !== B.payer && c.share[p.id] > 0,
+                  ),
+                  ok = d.filter((p) => B.paid[p.id]).length,
+                  py = B.people.find((p) => p.id === B.payer);
+                return `<div class="card" style="cursor:pointer" onclick="sOpen('${s.id}')"><div class="hd"><b>${esc(s.title)}</b><b>${rp(s.total)}</b></div><small>${fmtD(s.date)} · ${B.people.length} orang · 💳 ${esc(py ? py.name : "-")}</small><div style="margin-top:8px"><span class="st ${ok === d.length ? "" : "w"}">${ok === d.length ? "✓ Lunas semua" : ok + "/" + d.length + " sudah bayar"}</span></div></div>`;
+              })
+              .join("");
+        return `<section class="pg">${hdr("Split Bill", "menu")}${b}</section>`;
+      }
+      function sNew() {
+        SB = newSB();
+        S.sub = "split";
+        render();
+        scrollTo(0, 0);
+      }
+      function sOpen(id) {
+        const s = S.splits.find((x) => x.id === id);
+        if (!s) return;
+        SB = loadSB(s);
+        S.sub = "split";
+        render();
+        scrollTo(0, 0);
+      }
+      function sExit() {
+        if (
+          SB.dirty &&
+          !confirm("Keluar? Perubahan split yang belum disimpan akan hilang.")
+        )
+          return;
+        SB = null;
+        S.sub = "splits";
+        render();
+        scrollTo(0, 0);
+      }
+      function sGo(n) {
+        SB.step = n;
+        render();
+        scrollTo(0, 0);
+      }
+      function sNext() {
+        const B = SB,
+          s = B.step;
+        if (s === 1 && B.people.length < 2)
+          return toast("Tambahkan minimal 1 teman selain kamu", 1);
+        if (s === 2 && !B.items.length)
+          return toast("Tambahkan minimal 1 item", 1);
+        if (s === 3) {
+          const i = B.items.findIndex((x) => !x.w.length);
+          if (i >= 0)
+            return toast('Pilih peserta untuk "' + B.items[i].n + '"', 1);
+        }
+        if (s === 4) {
+          const e = feeErr();
+          if (e) return toast(e, 1);
+        }
+        sGo(s + 1);
+      }
+      function rSplit() {
+        const B = SB,
+          st = B.step,
+          T = ["Peserta", "Item", "Ikut", "Biaya", "Hasil"];
+        return `<section class="pg"><div class="back"><button class="x" onclick="sExit()">←</button><span class="hl">Split Bill</span></div>
+  <div class="steps">${T.map((t, i) => `<i class="${i + 1 < st ? "on" : i + 1 === st ? "cur" : ""}"></i>`).join("")}</div>
+  <b>Langkah ${st}/5 · ${T[st - 1]}</b>
+  ${[sp1, sp2, sp3, sp4, sp5][st - 1]()}
+  <div class="row2" style="margin-top:6px">${st > 1 ? `<button class="btn" style="background:#fff;flex:1" onclick="sGo(${st - 1})">‹ Kembali</button>` : ""}${st < 5 ? `<button class="btn k" style="flex:2" onclick="sNext()">Lanjut ›</button>` : ""}</div></section>`;
+      }
+      function sAddAcc() {
+        const type =
+          document.querySelector('input[name="acctype"]:checked')?.value ||
+          "bank";
+        const bank = ($("#acc-bank")?.value || "").trim();
+        const no = ($("#acc-no")?.value || "").trim();
+        const nm = ($("#acc-name")?.value || "").trim();
+        if (type === "bank") {
+          if (!bank) return toast("Nama bank/e-wallet wajib diisi", 1);
+          if (!no) return toast("Nomor rekening wajib diisi", 1);
+        }
+        if (type === "qris" && !no)
+          return toast("Nama/keterangan QRIS wajib diisi", 1);
+        SB.payAccounts.push({ type, bank, no, name: nm });
+        SB.dirty = 1;
+        render();
+      }
+      function sDelAcc(i) {
+        SB.payAccounts.splice(i, 1);
+        SB.dirty = 1;
+        render();
+      }
+      function sp1() {
+        const B = SB;
+        // Note: radio state isn't persisted, so we just always show both fields
+        // (bank field hidden via CSS trick using radio). We use a simple toggle approach.
+        const accForm = `<div class="card">
+  <b>💳 Rekening / QRIS untuk transfer</b>
+  <p style="margin:4px 2px 10px;opacity:.7;font-size:13px">Akan ditampilkan di ringkasan agar teman mudah transfer. <i>Opsional.</i></p>
+  ${
+    B.payAccounts.length
+      ? B.payAccounts
+          .map(
+            (a, i) => `<div class="tx">
+    <span>${a.type === "qris" ? "🟦 QRIS" : "🏦 " + esc(a.bank)}<br><small>${a.type === "qris" ? esc(a.no) : esc(a.no) + (a.name ? " · a/n " + esc(a.name) : "")}</small></span>
+    <button class="x" onclick="sDelAcc(${i})">✕</button>
+  </div>`,
+          )
+          .join("")
+      : ""
+  }
+  <div style="display:flex;gap:12px;margin-bottom:10px;margin-top:4px">
+    <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-weight:600">
+      <input type="radio" name="acctype" value="bank" checked onclick="$('#acc-bank-row').style.display='';$('#acc-name-row').style.display='';$('#acc-no').placeholder='Nomor rekening / no. HP';$('#acc-bank').placeholder='Bank / e-Wallet (mis. BCA, GoPay)'"> 🏦 Bank / e-Wallet
+    </label>
+    <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-weight:600">
+      <input type="radio" name="acctype" value="qris" onclick="$('#acc-bank-row').style.display='none';$('#acc-name-row').style.display='none';$('#acc-no').placeholder='Nama / keterangan QRIS (mis. QRIS Budi)'"> 🟦 QRIS
+    </label>
+  </div>
+  <div id="acc-bank-row" style="margin-bottom:6px"><input id="acc-bank" maxlength="30" placeholder="Bank / e-Wallet (mis. BCA, GoPay)"></div>
+  <input id="acc-no" maxlength="40" placeholder="Nomor rekening / no. HP" style="margin-bottom:6px">
+  <div id="acc-name-row"><input id="acc-name" maxlength="40" placeholder="Nama pemilik rekening (opsional)"></div>
+  <button class="btn k" style="margin-top:10px;width:100%" onclick="sAddAcc()">+ Tambah rekening/QRIS</button>
+</div>`;
+        return `<div class="card"><label class="lab" style="margin-top:0">Nama split</label><input maxlength="60" placeholder="mis. Makan malam di Bakmi" value="${esc(B.title)}" oninput="SB.title=this.value;SB.dirty=1">
+  <label class="lab">Tanggal</label><input type="date" value="${esc(B.date)}" oninput="SB.date=this.value;SB.dirty=1"></div>
+  <div class="card"><b>Peserta</b>
+  ${B.people.map((p, i) => `<div class="tx"><span>👤 ${esc(p.name)}${i === 0 ? " <small>(kamu)</small>" : ""}</span>${i ? `<button class="x" onclick="sDelP('${p.id}')">✕</button>` : ""}</div>`).join("")}
+  <div class="row2"><input id="pn" maxlength="30" placeholder="Nama teman" onkeydown="if(event.key==='Enter')sAddP()"><button class="btn k" style="margin-top:8px" onclick="sAddP()">Tambah</button></div></div>
+  <div class="card"><b>Siapa yang bayar di muka?</b><div class="row wrap">${B.people.map((p) => `<button class="chip ${B.payer === p.id ? "on" : ""}" onclick="SB.payer='${p.id}';SB.dirty=1;render()">💳 ${esc(p.name)}</button>`).join("")}</div></div>
+  ${accForm}`;
+      }
+      function sAddP() {
+        const n = ($("#pn").value || "").trim();
+        if (!n) return toast("Nama tidak boleh kosong", 1);
+        if (SB.people.some((p) => p.name.toLowerCase() === n.toLowerCase()))
+          return toast("Nama itu sudah ada", 1);
+        if (SB.people.length >= 30) return toast("Maksimal 30 peserta", 1);
+        SB.people.push({ id: "p" + SB.pc++, name: n });
+        SB.dirty = 1;
+        render();
+        setTimeout(() => {
+          const e = $("#pn");
+          if (e) e.focus();
+        }, 0);
+      }
+      function sDelP(id) {
+        const p = SB.people.find((x) => x.id === id);
+        if (!p || !confirm("Hapus " + p.name + " dari peserta?")) return;
+        SB.people = SB.people.filter((x) => x.id !== id);
+        SB.items.forEach((i) => (i.w = i.w.filter((x) => x !== id)));
+        if (SB.payer === id) SB.payer = "p0";
+        delete SB.paid[id];
+        SB.dirty = 1;
+        render();
+      }
+      function sp2() {
+        const B = SB,
+          e = B.ei >= 0 ? B.items[B.ei] : null,
+          k = true,
+          sub = B.items.reduce((s, i) => s + i.p * i.q, 0);
+        return `<div class="card"><b>${e ? "Edit item" : "Tambah item"}</b>
+  <input id="sin" maxlength="40" placeholder="Nama item, mis. Nasi goreng" value="${e ? esc(e.n) : ""}">
+  <div class="row2"><input id="sip" placeholder="Harga satuan (25rb)" value="${e ? e.p : ""}"><input id="siq" type="number" min="1" max="999" inputmode="numeric" value="${e ? e.q : 1}" style="width:90px"></div>
+  <button class="btn k big" onclick="sSaveI()">${e ? "Simpan item" : "+ Tambah item"}</button>${e ? '<button class="btn big" style="background:#fff" onclick="SB.ei=-1;render()">Batal edit</button>' : ""}</div>
+  <div class="card g">${B.busy ? '<div class="sk" style="margin:0"></div><p style="text-align:center">Membaca struk dengan AI…</p>' : k ? `<label class="btn big" style="margin:0 0 8px">📷 Isi dari foto struk<input type="file" accept="image/*" capture="environment" hidden onchange="sScan(this)"></label><label class="btn big" style="margin:0">🖼️ Dari galeri<input type="file" accept="image/*" hidden onchange="sScan(this)"></label>` : `<button class="btn big" style="margin:0" onclick="toast('Isi API key Gemini dulu di Lainnya › Pengaturan',1,4000)">📷 Isi dari foto struk</button>`}</div>
+  <div class="card"><b>Daftar item (${B.items.length})</b>${B.items.length ? B.items.map((it, i) => `<div class="tx"><div onclick="sEditI(${i})" style="flex:1;cursor:pointer">${esc(it.n)}<br><small>${it.q} × ${rp(it.p)} · ketuk untuk edit</small></div><b>${rp(it.p * it.q)}</b><button class="x" onclick="sDelI(${i})">✕</button></div>`).join("") + `<div class="tx"><b>Subtotal</b><b>${rp(sub)}</b></div>` : "<p>Belum ada item.</p>"}</div>`;
+      }
+      function sSaveI() {
+        const n = $("#sin").value.trim(),
+          p = pAmt($("#sip").value),
+          q = Math.floor(+$("#siq").value);
+        if (!n) return toast("Nama item wajib diisi", 1);
+        if (!p) return toast("Harga tidak valid. Contoh: 25rb atau 25.000", 1);
+        if (!(q >= 1 && q <= 999)) return toast("Jumlah harus 1–999", 1);
+        const B = SB;
+        if (B.ei >= 0) {
+          Object.assign(B.items[B.ei], { n, p, q });
+          B.ei = -1;
+        } else
+          B.items.push({
+            id: "i" + B.ic++,
+            n,
+            p,
+            q,
+            w: B.people.map((x) => x.id),
+          });
+        B.dirty = 1;
+        render();
+      }
+      function sEditI(i) {
+        SB.ei = i;
+        render();
+        scrollTo(0, 0);
+      }
+      function sDelI(i) {
+        if (!confirm('Hapus item "' + SB.items[i].n + '"?')) return;
+        SB.items.splice(i, 1);
+        SB.ei = -1;
+        SB.dirty = 1;
+        render();
+      }
+      async function sScan(inp) {
+        const f = inp.files[0],
+          B = SB;
+        if (!f || !B) return;
+        B.busy = 1;
+        render();
+        try {
+          const r = await scanApi(
+            await shrink(f),
+            'Baca struk ini. Balas HANYA JSON: {"items":[{"name":"nama item","price":harga SATUAN rupiah (angka tanpa titik),"qty":jumlah}],"tax":total pajak rupiah atau 0,"service":total service charge rupiah atau 0,"discount":total diskon rupiah atau 0,"total":total akhir rupiah}. Jangan masukkan pajak, service, diskon, atau total sebagai item. Jika hanya ada total per baris, bagi dengan qty untuk harga satuan.',
+          );
+          const its = (Array.isArray(r.items) ? r.items : [])
+            .map((x) => ({
+              n: String(x.name || "")
+                .trim()
+                .slice(0, 40),
+              p: Math.round(+x.price || 0),
+              q: Math.max(1, Math.min(999, Math.round(+x.qty || 1))),
+            }))
+            .filter((x) => x.n && x.p > 0);
+          if (!its.length) throw Error("tidak ada item terbaca");
+          its.forEach((x) =>
+            B.items.push({
+              id: "i" + B.ic++,
+              ...x,
+              w: B.people.map((p) => p.id),
+            }),
+          );
+          [
+            ["tax", r.tax],
+            ["svc", r.service],
+            ["disc", r.discount],
+          ].forEach(([k, v]) => {
+            v = Math.round(+v || 0);
+            if (v > 0) B.fee[k] = { m: "amt", v };
+          });
+          B.dirty = 1;
+          toast("✓ " + its.length + " item terbaca. Periksa dulu ya", 0, 3500);
+        } catch (e) {
+          toast("Scan gagal: " + e.message, 1);
+        }
+        B.busy = 0;
+        if (SB === B && S.sub === "split") render();
+      }
+      function sp3() {
+        const B = SB;
+        return (
+          `<p style="margin:10px 2px">Ketuk nama untuk memilih siapa yang ikut. Harga item dibagi rata antar yang dipilih.</p>` +
+          B.items
+            .map((it, i) => {
+              const t = it.p * it.q,
+                n = it.w.length;
+              return `<div class="card"><div class="hd"><b>${esc(it.n)}</b><b>${rp(t)}</b></div><small>${it.q}× ${rp(it.p)} ${n ? "· " + rp(t / n) + "/orang" : "· <b>pilih peserta</b>"}</small>
+  <div class="row wrap">${B.people.map((p) => `<button class="chip ${it.w.includes(p.id) ? "on" : ""}" onclick="sTog(${i},'${p.id}')">${esc(p.name)}</button>`).join("")}</div>
+  <div class="row"><button class="chip" onclick="sAll(${i},1)">Semua</button><button class="chip" onclick="sAll(${i},0)">Kosongkan</button></div></div>`;
+            })
+            .join("")
+        );
+      }
+      function sTog(i, id) {
+        const w = SB.items[i].w,
+          k = w.indexOf(id);
+        k < 0 ? w.push(id) : w.splice(k, 1);
+        SB.dirty = 1;
+        render();
+      }
+      function sAll(i, on) {
+        SB.items[i].w = on ? SB.people.map((p) => p.id) : [];
+        SB.dirty = 1;
+        render();
+      }
+      function fpH() {
+        const c = sbCalc(SB),
+          r = (l, v, x) =>
+            `<div class="hd"><span>${l}</span><b ${x || ""}>${v}</b></div>`;
+        return (
+          r("Subtotal", rp(c.sub)) +
+          (c.disc ? r("Diskon", "−" + rp(c.disc)) : "") +
+          (c.svc ? r("Service", rp(c.svc)) : "") +
+          (c.tax ? r("Pajak", rp(c.tax)) : "") +
+          `<div style="border-top:2px dashed #888;margin-top:6px;padding-top:6px">${r("Total", rp(c.grand), 'style="color:var(--lime);font-size:19px"')}</div>`
+        );
+      }
+      function sp4() {
+        const B = SB;
+        return (
+          `<p style="margin:10px 2px">Urutan hitung: diskon dikurangi dari subtotal, lalu service, lalu pajak (dari subtotal setelah diskon + service). Semua dibagi proporsional sesuai porsi tiap orang. Kosongkan jika tidak ada.</p>` +
+          FEE.map(([k, l, ph]) => {
+            const f = B.fee[k];
+            return `<div class="card"><div class="hd"><b>${l}</b><span class="row" style="margin:0;padding:0">${[
+              ["pct", "%"],
+              ["amt", "Rp"],
+            ]
+              .map(
+                ([m, t]) =>
+                  `<button class="chip ${f.m === m ? "on" : ""}" onclick="sFeeM('${k}','${m}')">${t}</button>`,
+              )
+              .join("")}</span></div>
+  <input inputmode="${f.m === "pct" ? "decimal" : "text"}" placeholder="${f.m === "pct" ? ph + " (%)" : "nominal, mis. 15rb"}" value="${f.v || ""}" oninput="sFeeV('${k}',this.value)"></div>`;
+          }).join("") +
+          `<div class="card k" id="fp">${fpH()}</div>`
+        );
+      }
+      function sFeeM(k, m) {
+        SB.fee[k] = { m, v: 0 };
+        SB.dirty = 1;
+        render();
+      }
+      function sFeeV(k, val) {
+        const f = SB.fee[k];
+        f.v =
+          f.m === "pct"
+            ? parseFloat(String(val).replace(",", ".")) || 0
+            : pAmt(val) || 0;
+        SB.dirty = 1;
+        $("#fp").innerHTML = fpH();
+      }
+      function feeErr() {
+        const c = sbCalc(SB);
+        for (const [k, l] of FEE) {
+          const f = SB.fee[k];
+          if (f.v < 0) return l + " tidak boleh negatif";
+          if (f.m === "pct" && f.v > 100)
+            return "Persentase " + l + " maksimal 100";
+        }
+        if (SB.fee.disc.m === "amt" && SB.fee.disc.v > c.sub)
+          return "Diskon melebihi subtotal";
+        return "";
+      }
+      function sText() {
+        const B = SB,
+          c = sbCalc(B),
+          pay = B.people.find((p) => p.id === B.payer) || B.people[0],
+          nm = (id) => (B.people.find((p) => p.id === id) || {}).name || "?";
+        const L = [
+          `🧾 *${B.title || "Split Bill"}*`,
+          `📅 ${fmtD(B.date)}`,
+          `💳 Dibayar di muka: ${pay.name}`,
+          "",
+          "*Rincian*",
+        ];
+        B.items.forEach((it) =>
+          L.push(
+            `• ${it.n}${it.q > 1 ? ` (${it.q}×)` : ""} ${rp(it.p * it.q)} — ${it.w.length === B.people.length ? "semua" : it.w.map(nm).join(", ")}`,
+          ),
+        );
+        L.push("");
+        if (c.disc || c.svc || c.tax) {
+          L.push(`Subtotal ${rp(c.sub)}`);
+          if (c.disc) L.push(`Diskon −${rp(c.disc)}`);
+          if (c.svc) L.push(`Service ${rp(c.svc)}`);
+          if (c.tax) L.push(`Pajak ${rp(c.tax)}`);
+        }
+        L.push(`*Total ${rp(c.grand)}*`, "", "*Bagian masing-masing*");
+        B.people.forEach((p) => {
+          const x = c.share[p.id];
+          if (p.id === B.payer) L.push(`• ${p.name} (pembayar): ${rp(x)}`);
+          else if (x > 0)
+            L.push(`• ${p.name}: ${rp(x)}${B.paid[p.id] ? " ✅ lunas" : ""}`);
+        });
+        // Rekening/QRIS
+        if (B.payAccounts && B.payAccounts.length) {
+          L.push("", `*Transfer ke ${pay.name}:*`);
+          B.payAccounts.forEach((a) => {
+            if (a.type === "qris") L.push(`🟦 QRIS: ${a.no}`);
+            else
+              L.push(`🏦 ${a.bank}: ${a.no}${a.name ? " a/n " + a.name : ""}`);
+          });
+        } else {
+          L.push("", `Mohon transfer ke ${pay.name} ya 🙏`);
+        }
+        L.push("_Dibuat dengan Sakuku_");
+        return L.join("\n");
+      }
+      function sCopy() {
+        const t = sText();
+        (navigator.clipboard
+          ? navigator.clipboard.writeText(t)
+          : Promise.reject()
+        )
+          .then(() => toast("✓ Ringkasan disalin"))
+          .catch(() => {
+            const a = document.createElement("textarea");
+            a.value = t;
+            document.body.appendChild(a);
+            a.select();
+            try {
+              document.execCommand("copy");
+              toast("✓ Ringkasan disalin");
+            } catch (e) {
+              toast("Gagal menyalin", 1);
+            }
+            a.remove();
+          });
+      }
+      function sp5() {
+        const B = SB,
+          c = sbCalc(B),
+          pay = B.people.find((p) => p.id === B.payer) || B.people[0],
+          debts = B.people.filter((p) => p.id !== B.payer && c.share[p.id] > 0),
+          unpaid = debts
+            .filter((p) => !B.paid[p.id])
+            .reduce((s, p) => s + c.share[p.id], 0),
+          paidCount = debts.filter((p) => B.paid[p.id]).length,
+          me = c.share.p0,
+          wa = "https://wa.me/?text=" + encodeURIComponent(sText());
+
+        // Kartu ringkasan total
+        const summaryCard = `<div class="card k" style="padding:18px">
+  <div style="opacity:.7;font-size:13px;margin-bottom:2px">Total Tagihan</div>
+  <div class="amt" style="text-align:left;color:var(--lime);margin:0 0 10px">${rp(c.grand)}</div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px">
+    <span>💳 Dibayar <b>${esc(pay.name)}</b></span>
+    <span>🧑‍🤝‍🧑 ${B.people.length} orang</span>
+  </div>
+  ${
+    c.disc || c.svc || c.tax
+      ? `<div style="border-top:1px solid rgba(255,255,255,.2);margin:10px 0 6px;padding-top:8px;font-size:12px;opacity:.8;display:flex;flex-wrap:wrap;gap:4px 12px">
+    <span>Subtotal ${rp(c.sub)}</span>${c.disc ? `<span>Diskon −${rp(c.disc)}</span>` : ""}${c.svc ? `<span>Service ${rp(c.svc)}</span>` : ""}${c.tax ? `<span>Pajak ${rp(c.tax)}</span>` : ""}
+  </div>`
+      : ""
+  }
+</div>`;
+
+        // Kartu per orang
+        const perOrangCard = `<div class="card">
+  <b>Tagihan per orang</b> <small style="opacity:.6">(dibulatkan Rp100)</small>
+  ${B.people
+    .map(
+      (
+        p,
+      ) => `<div class="tx" style="padding:10px 0;border-bottom:1px solid var(--bd,#eee)">
+    <span style="display:flex;align-items:center;gap:6px">
+      <span style="width:32px;height:32px;border-radius:50%;background:${p.id === B.payer ? "var(--lime,#B9FF66)" : "#f0f0f0"};display:inline-flex;align-items:center;justify-content:center;font-size:14px">${p.id === B.payer ? "💳" : "👤"}</span>
+      <span>${esc(p.name)}${p.id === B.payer ? ' <span class="pill" style="background:var(--lime,#B9FF66);color:#191A23">Pembayar</span>' : ""}</span>
+    </span>
+    <b style="font-size:16px">${rp(c.share[p.id])}</b>
+  </div>`,
+    )
+    .join("")}
+</div>`;
+
+        // Kartu status utang
+        const utangCard = `<div class="card">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+    <b>Status pembayaran</b>
+    ${debts.length ? `<span class="st ${paidCount === debts.length ? "" : "w"}" style="font-size:12px">${paidCount === debts.length ? "🎉 Lunas semua" : paidCount + "/" + debts.length + " lunas"}</span>` : ""}
+  </div>
+  ${
+    debts.length
+      ? debts
+          .map(
+            (
+              p,
+            ) => `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd,#eee)">
+    <div>
+      <div style="font-weight:600">${esc(p.name)}</div>
+      <div style="font-size:13px;opacity:.7">→ ${esc(pay.name)} · <b>${rp(c.share[p.id])}</b></div>
+    </div>
+    <button class="chip ${B.paid[p.id] ? "on" : ""}" style="min-width:90px" onclick="sPaid('${p.id}')">
+      ${B.paid[p.id] ? "✅ Lunas" : "⏳ Belum bayar"}
+    </button>
+  </div>`,
+          )
+          .join("") +
+        `<p style="margin:10px 0 0;font-size:13px">${unpaid ? "Sisa belum dibayar: <b>" + rp(unpaid) + "</b>" : "🎉 Semua sudah lunas!"}</p>`
+      : "<p>Tidak ada utang — satu orang menanggung semua.</p>"
+  }
+</div>`;
+
+        // Kartu rekening/QRIS
+        const accCard =
+          B.payAccounts && B.payAccounts.length
+            ? `<div class="card">
+  <b>Rekening / QRIS untuk transfer</b>
+  <p style="font-size:13px;opacity:.7;margin:4px 0 10px">Kirimkan pembayaran ke salah satu di bawah ini:</p>
+  ${B.payAccounts
+    .map(
+      (
+        a,
+      ) => `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--g2,#f4f6f8);border-radius:10px;margin-bottom:6px">
+    <span style="font-size:22px">${a.type === "qris" ? "🟦" : "🏦"}</span>
+    <span>
+      <div style="font-weight:600">${a.type === "qris" ? "QRIS" : esc(a.bank)}</div>
+      <div style="font-size:13px">${esc(a.no)}${a.type !== "qris" && a.name ? " · " + esc(a.name) : ""}</div>
+    </span>
+    <button class="x" style="margin-left:auto" onclick="navigator.clipboard&&navigator.clipboard.writeText('${a.no}').then(()=>toast('✓ Disalin'))">📋</button>
+  </div>`,
+    )
+    .join("")}
+</div>`
+            : "";
+
+        // Kartu bagikan
+        const shareCard = `<div class="card">
+  <b>Bagikan ringkasan</b>
+  <a class="btn k big" href="${wa}" target="_blank" rel="noopener" style="text-decoration:none;margin-top:10px">📲 Kirim ke WhatsApp</a>
+  <button class="btn big" style="margin-bottom:0" onclick="sCopy()">📋 Salin ringkasan teks</button>
+</div>`;
+
+        // Kartu simpan
+        const saveCard = `<div class="card">
+  <label class="chk" style="margin-top:0"><input type="checkbox" ${B.mine ? "checked" : ""} onchange="SB.mine=this.checked;SB.dirty=1;render()"> Catat bagianku (${rp(me)}) sebagai pengeluaran</label>
+  ${B.mine ? `<select onchange="SB.mcat=this.value">${CATS.out.map((x) => `<option ${B.mcat === x ? "selected" : ""}>${esc(x)}</option>`).join("")}</select>` : ""}
+  <button class="btn k big" onclick="sSave()">💾 ${B.id ? "Simpan perubahan" : "Simpan ke riwayat"}</button>
+  ${B.id ? '<button class="btn big" style="background:#fff;margin-bottom:0" onclick="sDel()">🗑 Hapus split ini</button>' : ""}
+</div>`;
+
+        return (
+          summaryCard +
+          perOrangCard +
+          utangCard +
+          accCard +
+          shareCard +
+          saveCard
+        );
+      }
+      function sPaid(id) {
+        const B = SB;
+        B.paid[id] = !B.paid[id];
+        if (!B.paid[id]) delete B.paid[id];
+        if (B.id)
+          FB.splitUpd(B.id, { paid: { ...B.paid } }).catch((e) =>
+            toast("Gagal menyimpan: " + e.message, 1),
+          );
+        else B.dirty = 1;
+        render();
+      }
+      function sSave() {
+        const B = SB,
+          c = sbCalc(B),
+          er = feeErr();
+        if (er) return toast(er, 1);
+        if (!(c.grand > 0)) return toast("Total tagihan harus lebih dari 0", 1);
+        if (!B.date) return toast("Tanggal wajib diisi", 1);
+        const title =
+            (B.title || "").trim().slice(0, 60) || "Split Bill " + fmtD(B.date),
+          id = B.id || FB.newId("splits"),
+          me = c.share.p0,
+          d = {
+            title,
+            date: B.date,
+            payer: B.payer,
+            people: B.people.map((p) => ({ id: p.id, name: p.name })),
+            items: B.items.map((i) => ({
+              id: i.id,
+              n: i.n,
+              p: i.p,
+              q: i.q,
+              w: [...i.w],
+            })),
+            tax: {
+              tax: { ...B.fee.tax },
+              svc: { ...B.fee.svc },
+              disc: { ...B.fee.disc },
+            },
+            total: c.grand,
+            paid: { ...B.paid },
+            mineTx: null,
+            ts: B.ts || Date.now(),
+            payAccounts: (B.payAccounts || []).map((a) => ({
+              type: a.type,
+              bank: a.bank,
+              no: a.no,
+              name: a.name,
+            })),
+          };
+        let tx = null;
+        if (B.mine && me > 0) {
+          const old = B.mineTx && S.tx.find((x) => x.id === B.mineTx),
+            tid = B.mineTx || FB.newId("tx");
+          tx = {
+            id: tid,
+            data: {
+              type: "out",
+              amt: me,
+              cat: B.mcat,
+              note: "Split bill: " + title.slice(0, 60),
+              date: B.date,
+              ts: old ? old.ts || Date.now() : Date.now(),
+            },
+          };
+          d.mineTx = tid;
+        } else if (B.mineTx) tx = { id: B.mineTx, del: 1 };
+        FB.splitSave(id, d, tx).catch((e) =>
+          toast("Gagal menyimpan: " + e.message, 1),
+        );
+        B.id = id;
+        B.ts = d.ts;
+        B.mineTx = d.mineTx;
+        B.mine = !!d.mineTx;
+        B.dirty = 0;
+        toast(
+          navigator.onLine
+            ? "✓ Split bill tersimpan"
+            : "✓ Tersimpan di HP, disinkronkan saat online",
+        );
+        render();
+      }
+      function sDel() {
+        const B = SB;
+        if (
+          !confirm(
+            'Hapus split "' +
+              (B.title || "ini") +
+              '"?' +
+              (B.mineTx
+                ? "\nCatatan pengeluaran di Beranda tidak ikut terhapus."
+                : "") +
+              "\nTidak bisa dibatalkan.",
+          )
+        )
+          return;
+        FB.splitDel(B.id).catch((e) =>
+          toast("Gagal menghapus: " + e.message, 1),
+        );
+        toast("✓ Split terhapus");
+        SB = null;
+        S.sub = "splits";
+        render();
+        scrollTo(0, 0);
+      }
+
+      const nb = ([k, i, l]) =>
+        `<button class="${S.tab === k ? "on" : ""}" onclick="S.tab='${k}';${k === "more" ? "S.sub='menu';" : ""}render();scrollTo(0,0)"><b>${i}</b>${l}</button>`;
+      const nav = () =>
+        `<nav>${[
+          ["home", "🏠", "Beranda"],
+          ["hist", "🧾", "Riwayat"],
+        ]
+          .map(nb)
+          .join("")}<button class="plus" onclick="openAdd()">+</button>${[
+          ["chart", "📊", "Grafik"],
+          ["more", "☰", "Lainnya"],
+        ]
+          .map(nb)
+          .join("")}</nav>`;
+      const loginCard = (m) =>
+        `<section class="pg"><div class="card" style="margin-top:14vh"><span class="hl">Sakuku</span><p>Catat pemasukan dan pengeluaran dari HP dalam hitungan detik. Datamu tersimpan di akun Google-mu dan tidak terlihat oleh pengguna lain.</p>${m || '<button class="btn k big" onclick="signIn()">Masuk dengan Google</button>'}</div></section>`;
+      function render() {
+        const keep = $("#sb") ? $("#sb").value : "";
+        let h;
+        if (S.noCfg)
+          h = loginCard(
+            "<p><b>Firebase belum diatur.</b> Isi firebaseConfig di index.html.</p>",
+          );
+        else if (S.user === undefined)
+          h = '<div class="sk" style="margin-top:20vh"></div>';
+        else if (!S.user) h = loginCard();
+        else
+          h =
+            { home: rHome, hist: rHist, chart: rChart, more: rMore }[S.tab]() +
+            nav();
+        $("#app").innerHTML = h;
+        if (S.user) {
+          if (S.tab === "hist") hl();
+          if (keep && $("#sb")) {
+            $("#sb").value = keep;
+            pv(keep);
+          }
+        }
+      }
+
+      // ---- Sheet: tambah / edit / scan ----
+      function openAdd() {
+        F = { mode: "pick" };
+        drawSheet();
+      }
+      function edit(id) {
+        const x = S.tx.find((z) => z.id === id);
+        F = { ...x, amt: String(x.amt), edit: 1, mode: "form" };
+        drawSheet();
+      }
+      function closeSheet() {
+        if (F && F.unsub) F.unsub();
+        F = null;
+        drawSheet();
+      }
+      function drawSheet() {
+        const el = $("#sheet");
+        if (!F) {
+          el.className = "";
+          el.innerHTML = "";
+          return;
+        }
+        const st = el.firstChild ? el.firstChild.scrollTop : 0;
+        el.className = "open";
+        const cl = '<button class="x" onclick="closeSheet()">✕</button>';
+        if (F.mode && F.mode[0] === "g") {
+          el.innerHTML = gSheet();
+          if (el.firstChild) el.firstChild.scrollTop = st;
+          return;
+        }
+        if (F.mode === "busy") {
+          el.innerHTML =
+            '<div class="pn"><div class="sk"></div><p style="text-align:center">Membaca struk dengan AI…</p></div>';
+          return;
+        }
+        if (F.mode === "pick") {
+          const k = true;
+          el.innerHTML = `<div class="pn"><div class="hd"><span class="hl">Catat</span>${cl}</div>
+  ${
+    k
+      ? `<label class="btn k big">📷 Scan Struk (Kamera)<input type="file" accept="image/*" capture="environment" hidden onchange="scanFile(this)"></label>
+  <label class="btn big">🖼️ Scan dari Galeri<input type="file" accept="image/*" hidden onchange="scanFile(this)"></label>`
+      : `<button class="btn k big" onclick="toast('Isi API key Gemini dulu di Lainnya › Pengaturan',1,4000)">📷 Scan Struk</button>`
+  }
+  <button class="btn big" style="background:#fff" onclick="F.type='out';F.amt='';F.cat='';F.date=today();F.note='';F.mode='form';drawSheet()">✍️ Input Manual</button></div>`;
+          return;
+        }
+        if (!F.cat) F.cat = "Lainnya";
+        F.cs = [...new Set([...CATS[F.type], F.cat])];
+        el.innerHTML = `<div class="pn"><div class="hd"><span class="hl">${F.edit ? "Edit" : "Tambah"} Transaksi</span>${cl}</div>
+  ${F.scanned ? '<div class="card g" style="padding:10px;margin:12px 0 4px">🔍 Hasil scan. Periksa dulu sebelum menyimpan.</div>' : ""}
+  <div class="row">${[
+    ["out", "Pengeluaran"],
+    ["in", "Pemasukan"],
+  ]
+    .map(
+      ([k, l]) =>
+        `<button class="chip ${F.type === k ? "on" : ""}" ${F.edit ? "disabled" : ""} onclick="F.type='${k}';F.cat='';drawSheet()">${l}</button>`,
+    )
+    .join("")}</div>
+  <div class="amt" id="amtv">${rp(+F.amt || 0)}</div>
+  <div class="row">${[10000, 50000, 100000].map((v) => `<button class="chip" onclick="addA(${v})">+${v / 1000}rb</button>`).join("")}<button class="chip" onclick="F.amt='';addA(0)">Reset</button></div>
+  <div class="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9, "000", 0, "⌫"].map((k) => `<button onclick="np('${k}')">${k}</button>`).join("")}</div>
+  <div class="row wrap">${F.cs.map((c, k) => `<button class="chip ${F.cat === c ? "on" : ""}" onclick="F.cat=F.cs[${k}];drawSheet()">${esc(c)}</button>`).join("")}</div>
+  <input type="date" value="${F.date}" oninput="F.date=this.value"><input placeholder="Catatan (opsional)" value="${esc(F.note || "")}" oninput="F.note=this.value">
+  <button class="btn k big" onclick="submitF()">Simpan</button>
+  ${F.edit ? '<button class="btn big" style="background:#fff" onclick="delF()">🗑 Hapus transaksi</button>' : ""}</div>`;
+        el.firstChild.scrollTop = st;
+      }
+      function addA(v) {
+        F.amt = String((+F.amt || 0) + v || "");
+        $("#amtv").textContent = rp(+F.amt || 0);
+      }
+      function np(k) {
+        F.amt =
+          k === "⌫"
+            ? F.amt.slice(0, -1)
+            : (F.amt + k).replace(/^0+/, "").slice(0, 12);
+        $("#amtv").textContent = rp(+F.amt || 0);
+      }
+      function submitF() {
+        if (
+          save({
+            id: F.id,
+            ts: F.ts,
+            type: F.type,
+            amt: +F.amt,
+            cat: F.cat,
+            note: (F.note || "").trim(),
+            date: F.date,
+          })
+        )
+          closeSheet();
+      }
+      function delF() {
+        if (!confirm("Hapus transaksi ini? Tidak bisa dibatalkan.")) return;
+        FB.del(F.id).catch((e) => toast("Gagal menghapus: " + e.message, 1));
+        toast("✓ Terhapus");
+        closeSheet();
+      }
+      function shrink(f) {
+        return new Promise((ok, no) => {
+          const i = new Image();
+          i.onload = () => {
+            const k = Math.min(1, 1400 / Math.max(i.width, i.height)),
+              c = document.createElement("canvas");
+            c.width = i.width * k;
+            c.height = i.height * k;
+            c.getContext("2d").drawImage(i, 0, 0, c.width, c.height);
+            ok(c.toDataURL("image/jpeg", 0.8).split(",")[1]);
+          };
+          i.onerror = () => no(Error("Gambar tidak terbaca"));
+          i.src = URL.createObjectURL(f);
+        });
+      }
+      async function scanApi(img, custom) {
+        const prompt =
+          custom ||
+          'Baca struk belanja ini. Balas HANYA JSON: {"total": angka rupiah tanpa titik (total akhir yang dibayar), "date": "YYYY-MM-DD" atau null, "merchant": "nama toko", "category": salah satu dari [' +
+            CATS.out.filter((c) => c !== "Tabungan").join(", ") +
+            "]}";
+        const r = await fetch(
+          "https://generativelanguage.googleapis.com/v1beta/models/" +
+            MODEL +
+            ":generateContent",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": window.GEMINI_KEY,
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [
+                    { text: prompt },
+                    { inline_data: { mime_type: "image/jpeg", data: img } },
+                  ],
+                },
+              ],
+              generationConfig: {
+                responseMimeType: "application/json",
+                temperature: 0,
+              },
+            }),
+          },
+        );
+        if (!r.ok)
+          throw Error(
+            "Gemini " +
+              r.status +
+              (r.status === 400 || r.status === 403 ? " (cek API key)" : ""),
+          );
+        const j = await r.json();
+        return JSON.parse(
+          j.candidates[0].content.parts[0].text.replace(/```json|```/g, ""),
+        );
+      }
+      async function scanFile(inp) {
+        const f = inp.files[0];
+        if (!f) return;
+        F = { mode: "busy" };
+        drawSheet();
+        try {
+          const r = await scanApi(await shrink(f));
+          if (!F) return;
+          F = {
+            type: "out",
+            amt: String(Math.round(+r.total || 0)),
+            cat: CATS.out.includes(r.category) ? r.category : "Lainnya",
+            date: /^\d{4}-\d\d-\d\d$/.test(r.date || "") ? r.date : today(),
+            note: r.merchant || "",
+            mode: "form",
+            scanned: 1,
+          };
+        } catch (e) {
+          toast("Scan gagal: " + e.message, 1);
+          F = { mode: "pick" };
+        }
+        drawSheet();
+      }
+      $("#sheet").addEventListener("click", (e) => {
+        if (e.target.id === "sheet") closeSheet();
+      });
+      if ("serviceWorker" in navigator)
+        navigator.serviceWorker.register("sw.js");
+      render();
+    </script>
+
+    <script type="module">
+      // ===== ISI DENGAN firebaseConfig MILIKMU (Firebase Console > Project settings > Your apps) =====
+      const firebaseConfig = {
+        apiKey: "AIzaSyAp2RxYRf35SsSJRRNmdGkNrYffwbmoUxc",
+        authDomain: "sakuku-c8b58.firebaseapp.com",
+        projectId: "sakuku-c8b58",
+        storageBucket: "sakuku-c8b58.firebasestorage.app",
+        messagingSenderId: "682514211151",
+        appId: "1:682514211151:web:a3c724f26fea970cf8253a",
+      };
+      // ===============================================================================================
+      if (firebaseConfig.apiKey.startsWith("ISI")) {
+        onNoConfig();
+      } else {
+        const V = "10.14.1",
+          B = "https://www.gstatic.com/firebasejs/" + V + "/";
+        const { initializeApp } = await import(B + "firebase-app.js");
+        const {
+          getAuth,
+          GoogleAuthProvider,
+          signInWithPopup,
+          signInWithRedirect,
+          onAuthStateChanged,
+          signOut,
+        } = await import(B + "firebase-auth.js");
+        const {
+          initializeFirestore,
+          persistentLocalCache,
+          persistentMultipleTabManager,
+          collection,
+          doc,
+          setDoc,
+          addDoc,
+          deleteDoc,
+          onSnapshot,
+          updateDoc,
+          writeBatch,
+          increment,
+          getDocs,
+        } = await import(B + "firebase-firestore.js");
+        const app = initializeApp(firebaseConfig),
+          auth = getAuth(app);
+        const db = initializeFirestore(app, {
+          localCache: persistentLocalCache({
+            tabManager: persistentMultipleTabManager(),
+          }),
+        });
+        let uid = null,
+          subs = [];
+        const col = () => collection(db, "users", uid, "tx");
+        window.FB = {
+          async signIn() {
+            const p = new GoogleAuthProvider();
+            try {
+              await signInWithPopup(auth, p);
+            } catch (e) {
+              if (
+                e.code === "auth/popup-blocked" ||
+                e.code === "auth/operation-not-supported-in-this-environment"
+              )
+                await signInWithRedirect(auth, p);
+              else if (
+                e.code !== "auth/popup-closed-by-user" &&
+                e.code !== "auth/cancelled-popup-request"
+              )
+                throw e;
+            }
+          },
+          out: () => signOut(auth),
+          add: (d) => addDoc(col(), d),
+          set: (id, d) => setDoc(doc(db, "users", uid, "tx", id), d),
+          del: (id) => deleteDoc(doc(db, "users", uid, "tx", id)),
+          prefs: (p) =>
+            setDoc(doc(db, "users", uid, "meta", "prefs"), { presets: p }),
+          newId: (c) => doc(collection(db, "users", uid, c)).id,
+          goalNew: (d) => setDoc(doc(collection(db, "users", uid, "goals")), d),
+          goalUpd: (id, d) => updateDoc(doc(db, "users", uid, "goals", id), d),
+          goalMove(gid, amt, type, date, tx, upd, r) {
+            const b = writeBatch(db),
+              gr = doc(db, "users", uid, "goals", gid),
+              lg = { amt, type, date, ts: Date.now() };
+            if (r) lg.r = true;
+            b.update(gr, {
+              saved: increment(type === "in" ? amt : -amt),
+              ...upd,
+            });
+            b.set(doc(collection(gr, "log")), lg);
+            if (tx) b.set(doc(collection(db, "users", uid, "tx")), tx);
+            return b.commit();
+          },
+          goalLog: (id, cb, er) =>
+            onSnapshot(
+              collection(db, "users", uid, "goals", id, "log"),
+              (s) => cb(s.docs.map((d) => ({ id: d.id, ...d.data() }))),
+              er,
+            ),
+          goalDel(id) {
+            const gr = doc(db, "users", uid, "goals", id),
+              p = deleteDoc(gr);
+            getDocs(collection(gr, "log"))
+              .then(async (s) => {
+                for (let i = 0; i < s.docs.length; i += 400) {
+                  const b = writeBatch(db);
+                  s.docs.slice(i, i + 400).forEach((d) => b.delete(d.ref));
+                  await b.commit();
+                }
+              })
+              .catch(() => {});
+            return p;
+          },
+          splitSave(id, d, tx) {
+            const b = writeBatch(db);
+            b.set(doc(db, "users", uid, "splits", id), d);
+            if (tx && tx.del) b.delete(doc(db, "users", uid, "tx", tx.id));
+            else if (tx) b.set(doc(db, "users", uid, "tx", tx.id), tx.data);
+            return b.commit();
+          },
+          splitUpd: (id, d) =>
+            updateDoc(doc(db, "users", uid, "splits", id), d),
+          splitDel: (id) => deleteDoc(doc(db, "users", uid, "splits", id)),
+        };
+        onAuthStateChanged(auth, (u) => {
+          subs.forEach((f) => f());
+          subs = [];
+          if (!u) {
+            uid = null;
+            onUser(null);
+            return;
+          }
+          uid = u.uid;
+          onUser(u);
+          subs.push(
+            onSnapshot(
+              col(),
+              (s) => onTx(s.docs.map((d) => ({ id: d.id, ...d.data() }))),
+              onErr,
+            ),
+          );
+          subs.push(
+            onSnapshot(
+              doc(db, "users", uid, "meta", "prefs"),
+              (s) => {
+                if (s.exists()) onPrefs(s.data().presets);
+              },
+              () => {},
+            ),
+          );
+          subs.push(
+            onSnapshot(
+              collection(db, "users", uid, "goals"),
+              (s) => onGoals(s.docs.map((d) => ({ id: d.id, ...d.data() }))),
+              onGErr,
+            ),
+          );
+          subs.push(
+            onSnapshot(
+              collection(db, "users", uid, "splits"),
+              (s) => onSplits(s.docs.map((d) => ({ id: d.id, ...d.data() }))),
+              onSErr,
+            ),
+          );
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+firestore.rules
+
+# API keys — jangan di-commit!
+config.js
